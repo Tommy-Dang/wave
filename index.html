@@ -10,27 +10,31 @@
   <link rel="stylesheet" type="text/css" href="styles/main.css" media="screen"/>
   <link rel="stylesheet" type="text/css" href="styles/msdropdown/dd.css" />
   <style>
-    .links line {
-      stroke: #999;
-      stroke-opacity: 0.6;
+    .link  {
+      stroke: #000;
+      stroke-opacity: 0.5;
     }
-    .nodes circle {
-      stroke: #fff;
-      stroke-width: 1px;
+    .node {
+      fill: none;
+      stroke-width: 2px;
     }
 </style>
 </head>
 <body>
     <h1>WaveComputing</h1>
   
-<svg width="960" height="600"></svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<h3> Link threshold 0 <input type="range" id="thersholdSlider" name="points" value = 0 min="0" max="10" onchange="threshold(this.value)"> 10 </h3>
 
 
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<script src="myscripts/dropShadown.js"></script>
 <script src="myscripts/main.js"></script>
 
 <div class="footer">
-    <span class="right">&copy; Last revised: September 30, 2017</span>
+    <span class="right">&copy; Last revised: Oct 30, 2017</span>
     <div class="clearer"><span></span></div>
   </div>
 </div>  

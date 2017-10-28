@@ -110,10 +110,7 @@ nav ul li:hover {
 nav ul li a {
     display: block; padding: 5px 30px;
 }
-        
-   
-        
-        
+             
 .container {
 	margin: 0 auto;
 	width: 90%;
@@ -142,11 +139,11 @@ nav ul li a {
 .footer {
 	border-bottom: 1px;
 	background-position: left bottom;
-	color: #776;
+	color: #fff;
 	font-size: 0.8em;
 	padding: 0px 30px 0;
 }
-.footer .right, .footer .right a {color: #443;}
+.footer .right, .footer .right a {color: #fff;}
 .footer .right a:hover {color: #665;}
 
 /* floats */
