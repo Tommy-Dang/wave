@@ -4,9 +4,12 @@ var color = d3.scale.category10();
 var dataS, dataH, dataB;
 var CONNECTED = 0,  DENSE = 1, CONVEX = 2, SKINNY = 3, COUNT = 4, VERSYMMETRY = 5,  HORSYMMETRY = 6,  MSTLENGTH = 7,  NUMALPHA = 8, UNIFORMALPHA = 9;
 var scagnosticList = ["CONNECTED","DENSE","CONVEX","SKINNY","COUNT","VERSYMMETRY","HORSYMMETRY","MSTLENGTH","NUMALPHA","UNIFORMALPHA"];  
-var numImg =1000;
+
 var numThred = 5;
-var dissAllStep;
+var numImg =1000;
+var numIntialNodes = 10;
+var cut = 15;
+
 
 var nodes = [];
 var links = [];
@@ -18,9 +21,16 @@ var link, node;
 
 var force = d3.layout.force()
     .charge(-40)
+    .gravity(0.2)
     .linkDistance(20)
+    .linkStrength(function(l){
+      return linkScale(l.value);
+    })
     .size([width*1.5, height]);
 
+var linkScale = d3.scale.linear()
+                    .range([1,0.1])
+                    .domain([10, 40]);  
 
 d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
   if (errorS) throw errorS;
@@ -34,7 +44,6 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
 
       dissAllStep = new Array(numImg);
       
-      var numIntialNodes = 100;
       // get nodes;
       for (var i1 = 0; i1 < numIntialNodes; i1++) {
         var nod = {};
@@ -49,7 +58,8 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
         var countLink = 0;
         for (var i2 = i1+1; i2 < numIntialNodes; i2++) {
           var dif = computeDis(i1,i2);
-          if (dif<3){
+         // console.log(dif+" "+cut);
+          if (dif<cut){
             var lin = {};
             lin.source = nodes[i1];
             lin.target = nodes[i2];
@@ -85,8 +95,8 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
                 .enter().append("line")
                 .attr("class", "link")
                 .style("stroke-width", function (d) {
-                return Math.sqrt(d.value/2);
-            });
+                  return linkScale(d.value);
+                });
           node = svg.selectAll(".node")
                 .data(nodes)
                     .enter().append("circle")
@@ -97,7 +107,7 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
                 })
         .call(force.drag);   
 
-        setInterval(update, 1000);
+        setInterval(update, 1);
     });
   });
 });  
@@ -118,28 +128,49 @@ force.on("tick", function () {
 
      node.attr("cx", function(d) { return d.x = Math.max(width/2+radius+margin, Math.min(width - radius-margin, d.x)); })
     .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius-margin, d.y)); });
-
-
 });
 
 
-var count =200;
+var count =numIntialNodes;
 function update() {
-    var nod = {};
-    nod.id = count;
-    nod.x = width/2;
-    nod.y = 0;
-    nod.group = count%10;
-    nodes.push(nod);
-    count++;
-    updateForce();
+  if (count>=numImg) {
+    console.log("Finish processing "+numImg +" images");
+    return; // finish the dataset
+  }
+  var nod = {};
+  nod.id = count;
+  nod.x = width/2+20;
+  nod.y = 50;
+  nod.group = count%10;
+  nodes.push(nod);
+  
+  // Compute links to existing network
+  for (var i = 0; i < nodes.length-1; i++) {
+    var dif = computeDis(i,count);
+    // console.log(dif+" "+cut);
+    if (dif<cut){
+      var lin = {};
+      lin.source = nodes[i];
+      lin.target = nodes[count];
+      lin.value = dif;
+      links.push(lin);
+      links2.push(lin);  
+    } 
+  }  
+
+  updateForce();
+  count++;
+  
 }
 
 
 function updateForce() {
   link = link.data(links);
   link.exit().remove();
-  link.enter().insert("line", ".node").attr("class", "link");
+  link.enter().insert("line").attr("class", "link")
+      .style("stroke-width", function (d) {
+        return linkScale(d.value);
+      });;
   node = node.data(nodes);
   node.enter().insert("circle", ".cursor").attr("class", "node")
       .attr("r", radius)
@@ -152,7 +183,7 @@ function updateForce() {
 function threshold(thresh) {
   links.splice(0, links.length);
   for (var i = 0; i < links2.length; i++) {
-    if (links2[i].value > thresh) {links.push(links2[i]);}
+    if (links2[i].value < thresh) {links.push(links2[i]);}
   }
   updateForce(); // the function above
 }
@@ -173,10 +204,17 @@ function computeDis(i1, i2){
     }
     dif += sum;
   }
-  return dif/(numThred);
+  return dif;
 }
 
 function ticked() {
+  var q = d3.geom.quadtree(nodes),
+      i = 0,
+      n = nodes.length;
+
+  while (++i < n) q.visit(collide(nodes[i]));
+
+
   link.attr("x1", function(d) { //console.log("x1="+d.source.x); 
     return d.source.x; })
       .attr("y1", function(d) { return d.source.y; })
@@ -186,6 +224,30 @@ function ticked() {
   node.attr("cx", function(d) { return d.x = Math.max(width/2+radius+margin, Math.min(width - radius-margin, d.x)); })
     .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius-margin, d.y)); });
 
+}
+
+function collide(node) {
+  var r = node.radius + 16,
+      nx1 = node.x - r,
+      nx2 = node.x + r,
+      ny1 = node.y - r,
+      ny2 = node.y + r;
+  return function(quad, x1, y1, x2, y2) {
+    if (quad.point && (quad.point !== node)) {
+      var x = node.x - quad.point.x,
+          y = node.y - quad.point.y,
+          l = Math.sqrt(x * x + y * y),
+          r = node.radius + quad.point.radius;
+      if (l < r) {
+        l = (l - r) / l * .5;
+        node.x -= x *= l;
+        node.y -= y *= l;
+        quad.point.x += x;
+        quad.point.y += y;
+      }
+    }
+    return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+  };
 }
   
 function dragstarted(d) {
