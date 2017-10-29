@@ -12,29 +12,32 @@
   <style>
     .link  {
       stroke: #000;
-      stroke-opacity: 0.2;
+      stroke-opacity: 0.4;
     }
     .node {
       fill: none;
-      stroke-width: 2px;
+      stroke-width: 1px;
+      stroke-opacity: 0.5;
     }
 </style>
+<title> Wave Image Clustering</title>
 </head>
 <body>
-    <h1>WaveComputing</h1>
+   <a href="http://wavecomp.ai/"><img src="images/logo.png" height="30" alt="Wave Computing" /></a>
   
 
-<h3> Link threshold 0 <input type="range" id="thersholdSlider" name="points" value = 20 min="0" max="40" onchange="threshold(this.value)"> 40 </h3>
+Link threshold 0 <input type="range" id="thersholdSlider" name="points" value = 20 min="0" max="40" onchange="threshold(this.value)"> 40 
 
 
 
 <script src="https://d3js.org/d3.v3.min.js"></script>
-
+<script type='text/javascript' src="http://bost.ocks.org/mike/fisheye/fisheye.js?0.0.3"> </script>
 <script src="myscripts/dropShadown.js"></script>
+<script src="myscripts/util.js"></script>
 <script src="myscripts/main.js"></script>
 
 <div class="footer">
-    <span class="right">&copy; Last revised: Oct 30, 2017</span>
+    <span class="right">&copy; <a href="http://wavecomp.ai/"><img src="images/logo2.png" height="11" alt="Wave Computing" /></a> Last revised: Oct 30, 2017</span>
     <div class="clearer"><span></span></div>
   </div>
 </div>  

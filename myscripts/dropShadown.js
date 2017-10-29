@@ -1,4 +1,11 @@
-
+/* October 2017 
+ * Tommy Dang, Assistant professor, iDVL@TTU
+ *
+ * THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTY.  IN PARTICULAR, THE AUTHORS MAKE NO REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY
+ * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
+ */
+ 
 var width = document.body.clientWidth;
 var height = 700;
 var margin = 12;
@@ -47,7 +54,7 @@ svg.append("rect")
     .attr("x", margin)
     .attr("rx", 8)
     .attr("ry", 8)
-    .attr("fill", "#ccc")
+    .attr("fill", "#fee")
     .style("filter", "url(#drop-shadow)"); 
 
 svg.append("rect")
@@ -56,7 +63,7 @@ svg.append("rect")
     .attr("x", width/2+margin)
     .attr("rx", 8)
     .attr("ry", 8)
-    .attr("fill", "#ddd")
+    .attr("fill", "#fff")
     .style("filter", "url(#drop-shadow)"); 
 
 
