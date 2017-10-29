@@ -9,8 +9,8 @@
 var width = document.body.clientWidth;
 var margin = 12;
 var heightRect = width/2-2*margin;
-var heightBoard = 300;
-var height = heightRect+margin+heightBoard;
+var heightBoard = 200;
+var height = heightRect+3*margin+heightBoard;
 var color1 = "#800";
 var color2 = "#088";
 
@@ -71,5 +71,16 @@ svg.append("rect")
     .attr("fill", "#eff")
     .attr("stroke", color2)
     .style("filter", "url(#drop-shadow)"); 
+
+// Time series
+svg.append("rect")
+    .attr("width", width-margin*2)
+    .attr("height", heightBoard)
+    .attr("x", margin)
+    .attr("y", heightRect+1.5*margin)
+    .attr("rx", 8)
+    .attr("ry", 8)
+    .attr("fill", "#444")
+    .style("filter", "url(#drop-shadow)");     
 
 

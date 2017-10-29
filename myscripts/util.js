@@ -5,7 +5,11 @@
  * WARRANTY.  IN PARTICULAR, THE AUTHORS MAKE NO REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY
  * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
  */
-
+var toggle1 = 0;
+var toggle2 = 0;
+var linkedByIndex1 = {};
+var linkedByIndex2 = {};
+    
 function redrawImages1(){
   svg.selectAll(".node1").remove();
   node1 = svg.selectAll(".node1").data(nodes1).enter().append("circle").attr("class", "node1")
@@ -16,6 +20,16 @@ function redrawImages1(){
     .call(force1.drag); 
   node1.append("title")
      .text(function(d) { return "image "+d.id; });
+
+  node1.on('click', connectedNodes1); //Added code 
+  //Create an array logging what is connected to what
+  for (i = 0; i < nodes1.length; i++) {
+      linkedByIndex1[nodes1[i].id + "," + nodes1[i].id] = 1;
+  };
+  links2.forEach(function (d) {
+      linkedByIndex1[d.source.id + "," + d.target.id] = 1;
+  });
+              
            
 }
 function redrawImages2(){
@@ -28,6 +42,15 @@ function redrawImages2(){
     .call(force2.drag); 
   node2.append("title")
      .text(function(d) { return "image "+d.id; });
+
+  node2.on('click', connectedNodes2); //Added code 
+  //Create an array logging what is connected to what
+  for (i = 0; i < nodes2.length; i++) {
+      linkedByIndex2[nodes2[i].id + "," + nodes2[i].id] = 1;
+  };
+  links2.forEach(function (d) {
+      linkedByIndex2[d.source.id + "," + d.target.id] = 1;
+  });
            
 }
 
@@ -46,8 +69,8 @@ function ticked1() {
         return d.target.y;
     });
 
-     node1.attr("cx", function(d) { return d.x = Math.max(radius+margin, Math.min(width/2 - radius-margin, d.x)); })
-    .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(heightRect - radius, d.y)); });
+     node1.attr("cx", function(d) { return d.x = Math.max(radius+margin+1, Math.min(width/2 - radius-margin-1, d.x)); })
+    .attr("cy", function(d) { return d.y = Math.max(radius+1, Math.min(heightRect - radius-1, d.y)); });
 
      node1.each(collide(0.5, nodes1)); //Added to avoid collision
      
@@ -67,8 +90,8 @@ function ticked2() {
         return d.target.y;
     });
 
-     node2.attr("cx", function(d) { return d.x = Math.max(width/2+radius+margin, Math.min(width - radius-margin, d.x)); })
-    .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(heightRect - radius, d.y)); });
+     node2.attr("cx", function(d) { return d.x = Math.max(width/2+radius+margin+1, Math.min(width - radius-margin-1, d.x)); })
+    .attr("cy", function(d) { return d.y = Math.max(radius+1, Math.min(heightRect - radius-1, d.y)); });
 
      node2.each(collide(0.5, nodes2)); //Added to avoid collision
 }
@@ -236,4 +259,54 @@ function collide(alpha,nodes) {
     });
   };
 }
+
+// ******************************* H for highlightinh ***************************************
+
+//This function looks up whether a pair are neighbours
+function neighboring1(a, b) {
+    return linkedByIndex1[a.id + "," + b.id];
+}
+function neighboring2(a, b) {
+    return linkedByIndex2[a.id + "," + b.id];
+}
+function connectedNodes1() {
+    if (toggle1 == 0) {
+        //Reduce the opacity of all but the neighbouring nodes
+        d = d3.select(this).node().__data__;
+        node1.style("opacity", function (o) {
+            return neighboring1(d, o) | neighboring1(o, d) ? 1 : 0.1;
+        });
+        link1.style("opacity", function (o) {
+            return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
+        });
+        //Reduce the op
+        toggle1 = 1;
+    } else {
+        //Put them back to opacity=1
+        node1.style("opacity", 1);
+        link1.style("opacity", 1);
+        toggle1 = 0;
+    }
+}
+function connectedNodes2() {
+    if (toggle2 == 0) {
+        //Reduce the opacity of all but the neighbouring nodes
+        d = d3.select(this).node().__data__;
+        node2.style("opacity", function (o) {
+            return neighboring2(d, o) | neighboring2(o, d) ? 1 : 0.1;
+        });
+        link2.style("opacity", function (o) {
+            return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
+        });
+        //Reduce the op
+        toggle2 = 1;
+    } else {
+        //Put them back to opacity=1
+        node2.style("opacity", 1);
+        link2.style("opacity", 1);
+        toggle2 = 0;
+    }
+}
+
+
   

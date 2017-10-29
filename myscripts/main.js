@@ -18,7 +18,7 @@ var numIntialNodes = 0;
 var count1 =numIntialNodes;
 var count2 =numIntialNodes;
 
-var cut = 17;
+var cut = 16;
 var radius = 10;
 
 var nodes2 = [];
@@ -113,14 +113,14 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
 
           interval1 = setInterval(function(){
             update2(count1,nodes1, links1, links11, interval1,computeDis1,updateForce1,redrawImages1)
-          } , 100);
+          } , 200);
 
           interval2 = setInterval(function(){
             update2(count2,nodes2, links2, links22, interval2,computeDis2,updateForce2,redrawImages2)
           } , 1);
-        //for (var i=0;i<numImg/4;i++){
-        //  update2();
-        //}
+          
+          // **********Time series
+          drawTimeSeries();
 
     });
   });
