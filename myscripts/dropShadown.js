@@ -7,8 +7,12 @@
  */
  
 var width = document.body.clientWidth;
-var height = 700;
 var margin = 12;
+var heightRect = width/2-2*margin;
+var heightBoard = 300;
+var height = heightRect+margin+heightBoard;
+var color1 = "#800";
+var color2 = "#088";
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
@@ -50,20 +54,22 @@ feMerge.append("feMergeNode")
         
 svg.append("rect")
     .attr("width", width/2-margin*2)
-    .attr("height", height-margin)
+    .attr("height", heightRect)
     .attr("x", margin)
     .attr("rx", 8)
     .attr("ry", 8)
     .attr("fill", "#fee")
+    .attr("stroke", color1)
     .style("filter", "url(#drop-shadow)"); 
 
 svg.append("rect")
     .attr("width", width/2-margin*2)
-    .attr("height", height-margin)
+    .attr("height", heightRect)
     .attr("x", width/2+margin)
     .attr("rx", 8)
     .attr("ry", 8)
-    .attr("fill", "#fff")
+    .attr("fill", "#eff")
+    .attr("stroke", color2)
     .style("filter", "url(#drop-shadow)"); 
 
 
