@@ -31,7 +31,6 @@ d3.tsv("data/data.tsv", type, function(error, data) {
   y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
   var barWidth = width / data.length;
-  debugger;
   var bar = chart.selectAll("g")
       .data(data)
     .enter().append("g")

@@ -6,7 +6,7 @@
  * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
  */
 
-var yTimeSeries = width/2+heightBoard-margin;
+var yTimeSeries = heightTop+width/2+heightBoard-margin;
 var color10 = d3.scale.category10();
 
 
@@ -17,8 +17,7 @@ var x = d3.scale.linear()
 var y = d3.scale.linear()
         .range([yTimeSeries,yTimeSeries-heightBoard])
         .domain([0, 1000]); 
-
-
+        
 var area = d3.svg.area()
     .interpolate("monotone")
     .x(function(d) { return x(d.id); })
