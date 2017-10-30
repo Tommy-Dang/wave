@@ -1,58 +1,117 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
 
-.chart rect {
-  fill: steelblue;
-}
+<head>
+    <title>Speedometer</title>
+     
+    <script type="text/javascript" src="http://iop.io/js/vendor/d3.v3.min.js"></script>
+    
+      <link rel='stylesheet' href='styles/font.css' type='text/css'>   
+    <script type="text/javascript" src="javascripts/pointerevents.js"></script>
+    <script type="text/javascript" src="javascripts/pointergestures.js"></script>
+    <script type="text/javascript" src="javascripts/iopctrl.js"></script>
+  
 
-.chart text {
-  fill: white;
-  font: 10px sans-serif;
-  text-anchor: middle;
-}
+    <style>
+        body {
+            font: 16px arial;
+            background-color: #515151;
+        }
 
-</style>
-<svg class="chart"></svg>
-<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script>
+        .unselectable {
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
 
-var width = 960,
-    height = 500;
+        /* css formats for the gauge */
+        .gauge .domain {
+            stroke-width: 2px;
+            stroke: #fff;
+        }
 
-var y = d3.scale.linear()
-    .range([height, 0]);
+        .gauge .tick line {
+            stroke: #fff;
+            stroke-width: 2px;
+        }
+        
+        .gauge line {
+            stroke: #fff;
+        }
 
-var chart = d3.select(".chart")
-    .attr("width", width)
-    .attr("height", height);
+        .gauge .arc, .gauge .cursor {
+            opacity: 0;
+        }
 
-d3.tsv("data/data.tsv", type, function(error, data) {
-  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+        .gauge .major {
+            fill: #fff;
+            font-size: 20px;
+            font-family: 'Play', verdana, sans-serif;
+            font-weight: normal;
+        }
+        
+        .gauge .indicator {
+            stroke: #EE3311;
+            fill: #000;
+            stroke-width: 4px;
+        }
 
-  var barWidth = width / data.length;
-  var bar = chart.selectAll("g")
-      .data(data)
-    .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+        /* css formats for the segment display */
+        .segdisplay .on {
+            fill: #00FFFF;
 
-  bar.append("rect")
-      .attr("y", function(d) { return y(d.value); })
-      .attr("height", function(d) { return height - y(d.value); })
-      .attr("width", barWidth - 1);
+        }
 
-  bar.append("text")
-      .attr("x", barWidth / 2)
-      .attr("y", function(d) { 
-        console.log(d.value);
-        return y(d.value) + 3; })
-      .attr("dy", ".75em")
-      .text(function(d) { return d.value; });
-});
+        .segdisplay .off {
+            fill: #00FFFF;
+            opacity: 0.15;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <span id="speedometer"></span>
+    </div>
+    
+    <script>
+        var svg = d3.select("#speedometer")
+                .append("svg:svg")
+                .attr("width", 400)
+                .attr("height", 400);
 
-function type(d) {
-  d.value = +d.value; // coerce to number
-  return d;
-}
 
-</script>
+        var gauge = iopctrl.arcslider()
+                .radius(120)
+                .events(false)
+                .indicator(iopctrl.defaultGaugeIndicator);
+        gauge.axis().orient("in")
+                .normalize(true)
+                .ticks(12)
+                .tickSubdivide(3)
+                .tickSize(10, 8, 10)
+                .tickPadding(5)
+                .scale(d3.scale.linear()
+                        .domain([0, 160])
+                        .range([-3*Math.PI/4, 3*Math.PI/4]));
+
+        var segDisplay = iopctrl.segdisplay()
+                .width(80)
+                .digitCount(6)
+                .negative(false)
+                .decimals(0);
+
+        svg.append("g")
+                .attr("class", "segdisplay")
+                .attr("transform", "translate(130, 200)")
+                .call(segDisplay);
+
+        svg.append("g")
+                .attr("class", "gauge")
+                .call(gauge);
+
+        segDisplay.value(56749);
+        gauge.value(92);
+    
+    </script>
+</body>

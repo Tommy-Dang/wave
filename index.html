@@ -9,6 +9,14 @@
   <link rel="stylesheet" type="text/css" href="styles/default.css" media="screen"/>
   <link rel="stylesheet" type="text/css" href="styles/main.css" media="screen"/>
   <link rel="stylesheet" type="text/css" href="styles/msdropdown/dd.css" />
+  <!--Speedometer-->
+  <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Play:700,400' type='text/css'>   
+    <script type="text/javascript" src="http://iop.io/js/vendor/d3.v3.min.js"></script>
+    <script type="text/javascript" src="http://iop.io/js/vendor/polymer/PointerEvents/pointerevents.js"></script>
+    <script type="text/javascript" src="http://iop.io/js/vendor/polymer/PointerGestures/pointergestures.js"></script>
+    <script type="text/javascript" src="http://iop.io/js/iopctrl.js"></script>
+    <!--Speedometer-->
+
   <style>
     .link1  {
       stroke: #000;
@@ -30,6 +38,58 @@
       stroke-width: 1px;
       stroke-opacity: 0.6;
     }
+
+     .unselectable {
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* css formats for the gauge */
+        .gauge .domain {
+            stroke-width: 2px;
+            stroke: #000;
+        }
+
+        .gauge .tick line {
+            stroke: #000;
+            stroke-width: 2px;
+        }
+        
+        .gauge line {
+            stroke: #000;
+        }
+
+        .gauge .arc, .gauge .cursor {
+            opacity: 0;
+        }
+
+        .gauge .major {
+            fill: #f00;
+            font-size: 20px;
+            font-family: 'Play', verdana, sans-serif;
+            font-weight: normal;
+        }
+        
+        .gauge .indicator {
+            stroke: #EE3311;
+            fill: #000;
+            stroke-width: 4px;
+        }
+
+        /* css formats for the segment display */
+        .segdisplay .on {
+            fill: #00FFFF;
+
+        }
+
+        .segdisplay .off {
+            fill: #00FFFF;
+            opacity: 0.15;
+        }
+
 </style>
 <title> Wave Image Clustering</title>
 </head>
@@ -37,12 +97,15 @@
 <!--   <a href="http://wavecomp.ai/"><img src="images/logo.png" height="30" alt="Wave Computing" /></a>
 Link threshold 0 <input type="range" id="thersholdSlider" name="points" value = 20 min="0" max="40" onchange="threshold(this.value)"> 40  -->
 
-
+ <div>
+    <span id="speedometer"></span>
+</div>
 
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script type='text/javascript' src="javascripts/fisheye.js"> </script>
 <script src="myscripts/dropShadown.js"></script>
 <script src="myscripts/util.js"></script>
+<script src="myscripts/speedometer.js"></script>
 <script src="myscripts/main.js"></script>
 <script src="myscripts/timeSeries.js"></script>
 
