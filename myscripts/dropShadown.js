@@ -80,7 +80,7 @@ svg.append("rect")
     .attr("y", heightRect+1.5*margin)
     .attr("rx", 8)
     .attr("ry", 8)
-    .attr("fill", "#444")
+    .attr("fill", "#bbb")
     .style("filter", "url(#drop-shadow)");     
 
 

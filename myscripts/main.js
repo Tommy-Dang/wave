@@ -10,7 +10,7 @@ var color = d3.scale.category10();
 
 var dataS, dataH, dataB;
 var CONNECTED = 0,  DENSE = 1, CONVEX = 2, SKINNY = 3, COUNT = 4, VERSYMMETRY = 5,  HORSYMMETRY = 6,  MSTLENGTH = 7,  NUMALPHA = 8, UNIFORMALPHA = 9;
-var scagnosticList = ["CONNECTED","DENSE","CONVEX","SKINNY","COUNT","VERSYMMETRY","HORSYMMETRY","MSTLENGTH","NUMALPHA","UNIFORMALPHA"];  
+var scagnosticList = ["Connected","Dense","Convex","Skinny","Count","Vertical Sym","Horizontal Sym","MST length","Num Alpha","Uniform Alpha"];  
 
 var numThred = 5;
 var numImg =1000;
@@ -50,9 +50,11 @@ var force2 = d3.layout.force()
     .size([width*1.5, heightRect]);    
 
 var linkScale = d3.scale.linear()
-                    .range([3,0.25])
+                    .range([2,0.3])
                     .domain([0, cut]);  
 var interval1, interval2;
+
+var startTime = (new Date()).getTime();
 
 d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
   if (errorS) throw errorS;
@@ -64,8 +66,6 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
       if (errorB) throw errorB;
       dataB = dataB_;
 
-      dissAllStep = new Array(numImg);
-      
         force1.nodes(nodes1)
           .links(links1)
           .start()
@@ -122,6 +122,8 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
           // **********Time series
           drawTimeSeries();
 
+          
+
     });
   });
 });  
@@ -143,7 +145,7 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
       count2++;
     return;  // Skip not connected nodes
   }
-  if (count>=numImg) {
+  if (count>=numImg/5) {
     clearInterval(interval);
     //getDisconnectedNodes();
     redrawImages();  //  to make sure images stay on top of the network
@@ -154,6 +156,15 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
   nod.id = count;
   nod.x = width/2+margin;
   nod.y = 0;
+  nod.milliseconds = (new Date()).getTime();
+  if (nodes.length>0){
+    nod.time = nod.milliseconds-nodes[nodes.length-1].milliseconds;
+    nod.timeMax = Math.max(nod.time,nodes[nodes.length-1].timeMax);
+  }  
+  else{
+    nod.time = nod.milliseconds-startTime;
+    nod.timeMax = 1000;
+  }  
   nod.group = count%10;
   nodes.push(nod);
   
@@ -203,9 +214,14 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
     linksTemp.push(linkList[i]);
   }
   updateForce();
-  if (interval==interval1)
-      count1++;
-    else
-      count2++;
+  if (interval==interval1){
+    updateTimeSeries();
+    drawScagHistogram(1,count1, 100,100);
+    count1++;
+  } 
+  else{
+    drawScagHistogram(1,count1, width/2+20,100);
+    count2++;
+  }   
 }
 
