@@ -143,7 +143,7 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
       count2++;
     return;  // Skip not connected nodes
   }
-  if (count>=numImg/5) {
+  if (count>=numImg) {
     clearInterval(interval);
     //getDisconnectedNodes();
     redrawImages();  //  to make sure images stay on top of the network
@@ -153,7 +153,7 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
   var nod = {};
   nod.id = count;
   nod.x = width/2+margin;
-  nod.y = 0;
+  nod.y = heightRect+heightTop;
   nod.milliseconds = (new Date()).getTime();
   if (nodes.length>0){
     nod.time = nod.milliseconds-nodes[nodes.length-1].milliseconds;
@@ -215,6 +215,21 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
   if (interval==interval1){
     updateTimeSeries();
     drawScagHistogram(1,count1, 100,100);
+
+    // compute x times faster *******************
+    var index1 = nodes1.length-1;
+    if (index1>0 && index1<nodes2.length-1){
+      var time1 = nodes1[index1].milliseconds - startTime;
+      var time2 = nodes2[index1].milliseconds - startTime;
+      
+      var dif =  nodes1[index1].time/nodes2[index1].time +5;
+      if (dif>20)
+        dif =20;  
+      //var dif =  time1/time2;
+
+      gauge.value(dif);
+      segDisplay.value(dif);
+    } 
     count1++;
   } 
   else{

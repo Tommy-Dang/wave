@@ -50,45 +50,61 @@
         /* css formats for the gauge */
         .gauge .domain {
             stroke-width: 2px;
-            stroke: #000;
+            stroke: #444;
+            fill: #fff;
         }
 
         .gauge .tick line {
-            stroke: #000;
+            stroke: #444;
             stroke-width: 2px;
         }
         
         .gauge line {
-            stroke: #000;
+            stroke: #444;
         }
 
         .gauge .arc, .gauge .cursor {
-            opacity: 0;
+           fill: #aaa;
+            opacity: 0.5;
+
         }
 
         .gauge .major {
-            fill: #f00;
-            font-size: 20px;
-            font-family: 'Play', verdana, sans-serif;
+            fill: #000;
+            font-size: 15px;
+            font-family:  sans-serif;
             font-weight: normal;
         }
         
         .gauge .indicator {
-            stroke: #EE3311;
+            stroke: #00f;
             fill: #000;
-            stroke-width: 4px;
+            stroke-width: 3px;
         }
 
         /* css formats for the segment display */
         .segdisplay .on {
-            fill: #00FFFF;
-
+            fill: #00f;
         }
-
         .segdisplay .off {
-            fill: #00FFFF;
-            opacity: 0.15;
+            fill: #00f;
+            opacity: 0.1;
         }
+
+        #holder1 {
+          position:absolute;
+          border-radius: 0px;
+          z-index: 1110;
+          top: 0px;
+          left: 50%;
+          margin-left: -150px;
+          margin-top: -46px;
+          width: 20%;
+          height:20%;
+          border: 0px solid rgba(0,0,0, 1);
+          font: normal 18px Impact, Charcoal, sans-serif !important;
+      }    
+
 
 </style>
 <title> Wave Image Clustering</title>
@@ -97,7 +113,7 @@
 <!--   <a href="http://wavecomp.ai/"><img src="images/logo.png" height="30" alt="Wave Computing" /></a>
 Link threshold 0 <input type="range" id="thersholdSlider" name="points" value = 20 min="0" max="40" onchange="threshold(this.value)"> 40  -->
 
- <div>
+ <div id="holder1"  class="holder1">
     <span id="speedometer"></span>
 </div>
 

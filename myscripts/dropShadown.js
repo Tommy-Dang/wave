@@ -8,7 +8,7 @@
  
 var width = document.body.clientWidth;
 var margin = 12;
-var heightTop = 100;
+var heightTop = 60;
 var heightRect = width/2-2*margin;
 var heightBoard = 200;
 var height = heightTop+heightRect+3*margin+heightBoard;
@@ -24,7 +24,7 @@ svg.append("a")
     .append("image")
     .attr("xlink:href", "images/logo.png")
     .attr("x", width*0.75-100)
-    .attr("y", "20")
+    .attr("y", "-16px")
     .attr("width", "200")
     .attr("height", "100");
 

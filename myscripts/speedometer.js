@@ -6,11 +6,19 @@
  * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
  */
 
-function drawSpeedometer(){
-  var gauge = iopctrl.arcslider()
-                .radius(120)
+
+var gauge = iopctrl.arcslider()
+                .radius(100)
+                .bands(5)
           .events(false)
           .indicator(iopctrl.defaultGaugeIndicator);
+var segDisplay = iopctrl.segdisplay()
+          .width(60)
+          .digitCount(2)
+          .negative(false)
+          .decimals(0);
+  
+function drawSpeedometer(){
   gauge.axis().orient("in")
           .normalize(true)
           .ticks(10)
@@ -18,26 +26,51 @@ function drawSpeedometer(){
           .tickSize(10, 5, 10)
           .tickPadding(5)
           .scale(d3.scale.linear()
-                  .domain([0, 16])
-                  .range([-3*Math.PI/4, 3*Math.PI/4]));
+                  .domain([0, 20])
+                  .range([-2.5*Math.PI/4, 2.5*Math.PI/4]));
 
-  var segDisplay = iopctrl.segdisplay()
-          .width(80)
-          .digitCount(6)
-          .negative(false)
-          .decimals(0);
+  
+  var svg2 = d3.select("#speedometer")
+                .append("svg:svg")
+                .attr("width", 300)
+                .attr("height", 300);
 
-  svg.append("g")
+  
+  svg2.append("rect")
+    .attr("width", 88)
+    .attr("height", 43)
+    .attr("x", 107)
+    .attr("y", 175)
+    .attr("rx", 3)
+    .attr("ry", 3)
+    .attr("fill", "#aaa")
+    .attr("fill-opacity", 0.9)
+    .attr("stroke", "#000")
+    .attr("stroke-width", 0.5);             
+  
+  svg2.append("text")
+    .attr("x", 167)
+    .attr("y", 214)
+    .attr("fill", "#00f")
+    .style("font-family",  "sans-serif")
+    .style("font-size", "40px")
+    .text("x");
+  
+
+  svg2.append("g")
           .attr("class", "segdisplay")
-          .attr("transform", "translate("+width+", 100)")
+          .attr("transform", "translate("+108+", 176)")
           .call(segDisplay);
 
-  svg.append("g")
+  svg2.append("g")
           .attr("class", "gauge")
           .call(gauge);
 
-  segDisplay.value(12);
-  gauge.value(92);
+  
+
+
+  gauge.value(0);
+  segDisplay.value(0);
     
 }
 

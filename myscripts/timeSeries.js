@@ -15,9 +15,9 @@ var x = d3.scale.linear()
         .domain([0, numImg]); 
 
 var y = d3.scale.linear()
-        .range([yTimeSeries,yTimeSeries-heightBoard])
+        .range([yTimeSeries,yTimeSeries-heightBoard*0.75])
         .domain([0, 1000]); 
-        
+
 var area = d3.svg.area()
     .interpolate("monotone")
     .x(function(d) { return x(d.id); })
@@ -99,7 +99,7 @@ function drawScagHistogram(id,indexImage, x_, y_){
   y1.domain(scagnosticList);
 
   var lineHeight = h/scagnosticList.length;
-  
+  var yScag = heightRect+heightTop-h;
   //svg.selectAll(".gridLine"+id).remove();
   svg.selectAll(".gridLineH"+id)
       .data(a)
@@ -108,9 +108,9 @@ function drawScagHistogram(id,indexImage, x_, y_){
       .style("stroke", function(d){ return color10(d.name);})
       .style("stroke-opacity",0.3) 
       .attr("x1", function(d,i) { return x_+scagScale(d.valueH);})
-      .attr("y1", function(d,i) {return lineHeight*(i%scagnosticList.length);})
+      .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length);})
       .attr("x2", function(d,i) { return x_+scagScale(d.valueH); })
-      .attr("y2", function(d,i) {return lineHeight*(i%scagnosticList.length)+lineHeight-1;})
+      .attr("y2", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)+lineHeight-1;})
 
   svg.selectAll(".gridLineS"+id)
       .data(a)
@@ -119,9 +119,9 @@ function drawScagHistogram(id,indexImage, x_, y_){
       .style("stroke", function(d){ return color10(d.name);})
       .style("stroke-opacity",0.3) 
       .attr("x1", function(d,i) { return x_+w*2+scagScale(d.valueS);})
-      .attr("y1", function(d,i) {return lineHeight*(i%scagnosticList.length);})
+      .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length);})
       .attr("x2", function(d,i) { return x_+w*2+scagScale(d.valueS); })
-      .attr("y2", function(d,i) {return lineHeight*(i%scagnosticList.length)+lineHeight-1;})    
+      .attr("y2", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)+lineHeight-1;})    
     
   svg.selectAll(".gridLineB"+id)
       .data(a)
@@ -130,9 +130,9 @@ function drawScagHistogram(id,indexImage, x_, y_){
       .style("stroke", function(d){ return color10(d.name);})
       .style("stroke-opacity",0.3) 
       .attr("x1", function(d,i) { return x_+w*4+scagScale(d.valueB);})
-      .attr("y1", function(d,i) {return lineHeight*(i%scagnosticList.length);})
+      .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length);})
       .attr("x2", function(d,i) { return x_+w*4+scagScale(d.valueB); })
-      .attr("y2", function(d,i) {return lineHeight*(i%scagnosticList.length)+lineHeight-1;})
+      .attr("y2", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)+lineHeight-1;})
 
 }       
 
