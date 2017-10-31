@@ -113,7 +113,7 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
 
           interval1 = setInterval(function(){
             update2(count1,nodes1, links1, links11, interval1,computeDis1,updateForce1,redrawImages1)
-          } , 500);
+          } , 300);
 
           interval2 = setInterval(function(){
             update2(count2,nodes2, links2, links22, interval2,computeDis2,updateForce2,redrawImages2)
