@@ -17,7 +17,7 @@ var segDisplay = iopctrl.segdisplay()
           .digitCount(2)
           .negative(false)
           .decimals(0);
-  
+var yMeter = heightTop+120;  
 function drawSpeedometer(){
   gauge.axis().orient("in")
           .normalize(true)
@@ -40,17 +40,17 @@ function drawSpeedometer(){
     .attr("width", 88)
     .attr("height", 43)
     .attr("x", 107)
-    .attr("y", 175)
+    .attr("y", yMeter-1)
     .attr("rx", 3)
     .attr("ry", 3)
-    .attr("fill", "#aaa")
+    .attr("fill", "#ddd")
     .attr("fill-opacity", 0.9)
     .attr("stroke", "#000")
     .attr("stroke-width", 0.5);             
   
   svg2.append("text")
     .attr("x", 167)
-    .attr("y", 214)
+    .attr("y", heightTop+158)
     .attr("fill", "#00f")
     .style("font-family",  "sans-serif")
     .style("font-size", "40px")
@@ -59,16 +59,12 @@ function drawSpeedometer(){
 
   svg2.append("g")
           .attr("class", "segdisplay")
-          .attr("transform", "translate("+108+", 176)")
+          .attr("transform", "translate(108,"+yMeter+")")
           .call(segDisplay);
 
   svg2.append("g")
           .attr("class", "gauge")
           .call(gauge);
-
-  
-
-
   gauge.value(0);
   segDisplay.value(0);
     

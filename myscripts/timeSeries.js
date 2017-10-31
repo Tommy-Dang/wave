@@ -15,7 +15,7 @@ var x = d3.scale.linear()
         .domain([0, numImg]); 
 
 var y = d3.scale.linear()
-        .range([yTimeSeries,yTimeSeries-heightBoard*0.75])
+        .range([yTimeSeries,yTimeSeries-heightBoard*0.9])
         .domain([0, 1000]); 
 
 var area = d3.svg.area()
@@ -23,6 +23,7 @@ var area = d3.svg.area()
     .x(function(d) { return x(d.id); })
     .y0(yTimeSeries)
     .y1(function(d) { return y(d.time); });
+
 
 function drawTimeSeries() {
   //x.domain(d3.extent(data, function(d) { return d.date; }));
@@ -80,11 +81,108 @@ function updateTimeSeries() {
 
 
 
-var w=70, h=100; 
+var w=100, h=88; 
 scagScale = d3.scale.linear().rangeRound([w, 0])
                     .domain([0, 1]);
+var lineHeight = h/scagnosticList.length;
+var hScale = d3.scale.linear().rangeRound([1.5, lineHeight/2])
+                    .domain([0, 1000]);
+
 var a = []; 
+var countText1 =0;
+var countText2 =0;
+var yScag = heightRect+heightTop-h;
 function drawScagHistogram(id,indexImage, x_, y_){
+  if (id==1 && countText1==0){
+    svg.selectAll(".textScagnostic"+id)
+      .data(scagnosticList).enter()
+      .append("text")
+      .attr("class", "textScagnostic"+id)
+      .attr("font-family", "sans-serif")
+      .attr("text-anchor", "end")
+      .style("font-size", "10px")
+      .style("fill", function(d){ return color10(d);})
+      .attr("x", x_-5)
+      .attr("y", function(d,i) {return yScag+lineHeight*i+3;})
+      .text(function(d){ return d;});
+    svg.selectAll(".gridLineH"+id)
+      .data(scagnosticList).enter()
+      .append("line")
+      .attr("class", "gridLineH"+id)
+      .style("stroke", "#000")
+      .style("stroke-width", 0.2)
+      .attr("x1", x_-2)
+      .attr("y1", function(d,i) {return yScag+lineHeight*i;})
+      .attr("x2", x_+w+4)
+      .attr("y2", function(d,i) {return yScag+lineHeight*i;});
+    svg.selectAll(".gridLineS"+id)
+      .data(scagnosticList).enter()
+      .append("line")
+      .attr("class", "gridLineS"+id)
+      .style("stroke", "#000")
+      .style("stroke-width", 0.2)
+      .attr("x1", x_+w*1.5-2)
+      .attr("y1", function(d,i) {return yScag+lineHeight*i;})
+      .attr("x2", x_+w*2.5+4)
+      .attr("y2", function(d,i) {return yScag+lineHeight*i;});
+    svg.selectAll(".gridLineB"+id)
+      .data(scagnosticList).enter()
+      .append("line")
+      .attr("class", "gridLineB"+id)
+      .style("stroke", "#000")
+      .style("stroke-width", 0.2)
+      .attr("x1", x_+w*3-2)
+      .attr("y1", function(d,i) {return yScag+lineHeight*i;})
+      .attr("x2", x_+w*4+4)
+      .attr("y2", function(d,i) {return yScag+lineHeight*i;});
+    countText1++;
+  }  
+  else if (id==2 && countText2==0){
+    svg.selectAll(".textScagnostic"+id)
+      .data(scagnosticList).enter()
+      .append("text")
+      .attr("class", "textScagnostic"+id)
+      .attr("font-family", "sans-serif")
+      .attr("text-anchor", "end")
+      .style("font-size", "10px")
+      .style("fill", function(d){ return color10(d);})
+      .attr("x", x_-5)
+      .attr("y", function(d,i) {return yScag+lineHeight*i+3;})
+      .text(function(d){ return d;});
+    svg.selectAll(".gridLineH"+id)
+      .data(scagnosticList).enter()
+      .append("line")
+      .attr("class", "gridLineH"+id)
+      .style("stroke", "#000")
+      .style("stroke-width", 0.2)
+      .attr("x1", x_-2)
+      .attr("y1", function(d,i) {return yScag+lineHeight*i;})
+      .attr("x2", x_+w+4)
+      .attr("y2", function(d,i) {return yScag+lineHeight*i;});
+    svg.selectAll(".gridLineS"+id)
+      .data(scagnosticList).enter()
+      .append("line")
+      .attr("class", "gridLineS"+id)
+      .style("stroke", "#000")
+      .style("stroke-width", 0.2)
+      .attr("x1", x_+w*1.5-2)
+      .attr("y1", function(d,i) {return yScag+lineHeight*i;})
+      .attr("x2", x_+w*2.5+4)
+      .attr("y2", function(d,i) {return yScag+lineHeight*i;});
+    svg.selectAll(".gridLineB"+id)
+      .data(scagnosticList).enter()
+      .append("line")
+      .attr("class", "gridLineB"+id)
+      .style("stroke", "#000")
+      .style("stroke-width", 0.2)
+      .attr("x1", x_+w*3-2)
+      .attr("y1", function(d,i) {return yScag+lineHeight*i;})
+      .attr("x2", x_+w*4+4)
+      .attr("y2", function(d,i) {return yScag+lineHeight*i;});  
+    countText2++;
+  }  
+
+
   // Get scagnostics
   for (var i=0; i<scagnosticList.length;i++){
     var obj ={};
@@ -98,41 +196,43 @@ function drawScagHistogram(id,indexImage, x_, y_){
   var y1 = d3.scale.ordinal().rangeRoundBands([0, h]);
   y1.domain(scagnosticList);
 
-  var lineHeight = h/scagnosticList.length;
-  var yScag = heightRect+heightTop-h;
   //svg.selectAll(".gridLine"+id).remove();
+
   svg.selectAll(".gridLineH"+id)
       .data(a)
     .enter().append("line")
       .attr("class", "gridLineH"+id)
       .style("stroke", function(d){ return color10(d.name);})
-      .style("stroke-opacity",0.3) 
+      .style("stroke-width",0.3) 
+      .style("stroke-opacity",0.5) 
       .attr("x1", function(d,i) { return x_+scagScale(d.valueH);})
-      .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length);})
+      .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)-hScale(indexImage);})
       .attr("x2", function(d,i) { return x_+scagScale(d.valueH); })
-      .attr("y2", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)+lineHeight-1;})
+      .attr("y2", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)+hScale(indexImage);})
 
   svg.selectAll(".gridLineS"+id)
       .data(a)
     .enter().append("line")
       .attr("class", "gridLineS"+id)
       .style("stroke", function(d){ return color10(d.name);})
-      .style("stroke-opacity",0.3) 
-      .attr("x1", function(d,i) { return x_+w*2+scagScale(d.valueS);})
-      .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length);})
-      .attr("x2", function(d,i) { return x_+w*2+scagScale(d.valueS); })
-      .attr("y2", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)+lineHeight-1;})    
+      .style("stroke-width",0.3) 
+      .style("stroke-opacity",0.5) 
+      .attr("x1", function(d,i) { return x_+w*1.5+scagScale(d.valueS);})
+      .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)-lineHeight/2+0.5;})
+      .attr("x2", function(d,i) { return x_+w*1.5+scagScale(d.valueS); })
+      .attr("y2", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)+lineHeight/2-0.5;})    
     
   svg.selectAll(".gridLineB"+id)
       .data(a)
     .enter().append("line")
       .attr("class", "gridLineB"+id)
       .style("stroke", function(d){ return color10(d.name);})
-      .style("stroke-opacity",0.3) 
-      .attr("x1", function(d,i) { return x_+w*4+scagScale(d.valueB);})
-      .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length);})
-      .attr("x2", function(d,i) { return x_+w*4+scagScale(d.valueB); })
-      .attr("y2", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)+lineHeight-1;})
+      .style("stroke-width",0.3) 
+      .style("stroke-opacity",0.5) 
+      .attr("x1", function(d,i) { return x_+w*3+scagScale(d.valueB);})
+      .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)-hScale(1000-indexImage);})
+      .attr("x2", function(d,i) { return x_+w*3+scagScale(d.valueB); })
+      .attr("y2", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)+hScale(1000-indexImage);})
 
 }       
 

@@ -8,11 +8,11 @@
  
 var width = document.body.clientWidth;
 var margin = 12;
-var heightTop = 60;
+var heightTop = 50;
 var heightRect = width/2-2*margin;
-var heightBoard = 200;
+var heightBoard = 120;
 var height = heightTop+heightRect+3*margin+heightBoard;
-var color1 = "#800";
+var color1 = "#a00";
 var color2 = "#088";
 
 var svg = d3.select("body").append("svg")
@@ -24,18 +24,28 @@ svg.append("a")
     .append("image")
     .attr("xlink:href", "images/logo.png")
     .attr("x", width*0.75-100)
-    .attr("y", "-16px")
-    .attr("width", "200")
+    .attr("y", heightTop-70)
+    .attr("width", "180")
     .attr("height", "100");
 
  svg.append("text")
     .attr("x", width*0.25)
-    .attr("y", heightTop*0.75)
+    .attr("y", heightTop-10)
     .style("fill", color1)
     .style("text-shadow", "1px 1px 0 rgba(0, 0, 0, 0.7")
     .attr("text-anchor", "middle")
     .style("font-size", "23px")
     .text("GPU");   
+
+
+
+//*********************** Images from Jin *********************
+/*svg.append("image")
+    .attr("xlink:href", "images/GoogleInception.png")
+    .attr("x",0)
+    .attr("y", -120)
+    .attr("width", width*0.6)
+    .attr("height", "400");*/
 
 
 //*********** Dropdown rectangle format *******************
@@ -105,5 +115,39 @@ svg.append("rect")
     .attr("ry", 8)
     .attr("fill", "#bbb")
     .style("filter", "url(#drop-shadow)");     
+
+//*********************** Text processing ********************
+svg.append("text")
+    .attr("class", "processingText1")
+    .attr("x", margin+5)
+    .attr("y", heightTop+15)
+    .style("fill", color1)
+    .attr("font-family", "sans-serif")
+    .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 1")
+    .attr("text-anchor", "start")
+    .style("font-size", "14px")
+    .text("0/"+1000); 
+svg.append("text")
+    .attr("class", "processingText2")
+    .attr("x", width-margin-5)
+    .attr("y", heightTop+15)
+    .style("fill", color2)
+    .attr("font-family", "sans-serif")
+    .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 1")
+    .attr("text-anchor", "end")
+    .style("font-size", "14px")
+    .text("0/"+1000);     
+//*********************** Image processing ********************
+var radius2 = 20;
+svg.append("circle").attr("class", "processingImage1")
+    .attr("cx", width/2-radius2-margin-5)
+    .attr("cy", heightTop+heightRect-radius2-5)
+    .attr("r", radius2)
+    .style("fill", color1); 
+svg.append("circle").attr("class", "processingImage2")
+    .attr("cx", width/2+radius2+margin+5)
+    .attr("cy", heightTop+heightRect-radius2-5)
+    .attr("r", radius2)
+    .style("fill", color2);     
 
 

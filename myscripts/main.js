@@ -214,7 +214,7 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
   updateForce();
   if (interval==interval1){
     updateTimeSeries();
-    drawScagHistogram(1,count1, 100,100);
+    drawScagHistogram(1,count1, 100,94);
 
     // compute x times faster *******************
     var index1 = nodes1.length-1;
@@ -229,11 +229,26 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
 
       gauge.value(dif);
       segDisplay.value(dif);
+
     } 
+    //update processing text
+    svg.selectAll(".processingText1")
+      .text(count1+"/"+numImg);
+    //update processing Image
+    svg.selectAll(".processingImage1")
+      .style("fill", "url(#catpattern"+(nod.id+1)+")");    
+      
     count1++;
   } 
   else{
-    drawScagHistogram(1,count1, width/2+20,100);
+    drawScagHistogram(2,count1, width/2+220,94);
+    //update processing text
+    svg.selectAll(".processingText2")
+      .text(count2+"/"+numImg);
+    //update processing Image
+    svg.selectAll(".processingImage2")
+      .style("fill", "url(#catpattern"+(nod.id+1)+")");    
+      
     count2++;
   }   
 }
