@@ -35,7 +35,7 @@ svg.append("a")
     .style("text-shadow", "1px 1px 0 rgba(0, 0, 0, 0.7")
     .attr("text-anchor", "middle")
     .style("font-size", "23px")
-    .text("Single Core");   
+    .text("GPU");   
 
 
 //*********** Dropdown rectangle format *******************

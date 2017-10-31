@@ -70,7 +70,7 @@ function ticked1() {
     });
 
      node1.attr("cx", function(d) { return d.x = Math.max(radius+margin+1, Math.min(width/2 - radius-margin-1, d.x)); })
-    .attr("cy", function(d) { return d.y = Math.max(radius+1, Math.min(heightRect - radius-1, d.y)); });
+    .attr("cy", function(d) { return d.y = Math.max(heightTop+radius+1, Math.min(heightTop+heightRect - radius-1, d.y)); });
 
      node1.each(collide(0.5, nodes1)); //Added to avoid collision
      
@@ -91,7 +91,7 @@ function ticked2() {
     });
 
      node2.attr("cx", function(d) { return d.x = Math.max(width/2+radius+margin+1, Math.min(width - radius-margin-1, d.x)); })
-    .attr("cy", function(d) { return d.y = Math.max(radius+1, Math.min(heightRect - radius-1, d.y)); });
+    .attr("cy", function(d) { return d.y = Math.max(heightTop+radius+1, Math.min(heightTop+heightRect - radius-1, d.y)); });
 
      node2.each(collide(0.5, nodes2)); //Added to avoid collision
 }
