@@ -6,23 +6,25 @@
  * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
  */
 
-var yTimeSeries = heightTop+width/2+heightBoard-margin;
+var yTimeSeries = heightTop+width/2+heightBoard-20;
 var color10 = d3.scale.category10();
 
 
 var x = d3.scale.linear()
-        .range([margin*2,width*0.9])
+        .range([margin*3,width-margin*3])
         .domain([0, numImg]); 
 
 var y = d3.scale.linear()
-        .range([yTimeSeries,yTimeSeries-heightBoard*0.9])
-        .domain([0, 1000]); 
+        .range([yTimeSeries,yTimeSeries-heightBoard*0.85])
+        .domain([0, 1]); 
+var xAxis, yAxis;
 
+var timeRatio =2000;
 var area = d3.svg.area()
     .interpolate("monotone")
     .x(function(d) { return x(d.id); })
     .y0(yTimeSeries)
-    .y1(function(d) { return y(d.time); });
+    .y1(function(d) { return y(d.time/timeRatio); });
 
 
 function drawTimeSeries() {
@@ -30,52 +32,88 @@ function drawTimeSeries() {
   //y.domain([0, d3.max(data, function(d) { return d.close; })]);
   //area.y0(y(0));
   
+  
+
+//Create the Axis
+  xAxis = d3.svg.axis()
+    .scale(x)
+    .innerTickSize(-4)
+    .outerTickSize(-4)
+    .orient("bottom");
+
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + yTimeSeries + ")")
+      .call(xAxis);
+
+    svg.append("text")
+      .attr("fill", "#000")
+      .attr("x", width-margin-5)
+      .attr("y", yTimeSeries-margin)
+      .attr("font-family", "sans-serif")
+      .attr("text-anchor", "end")
+      .style("font-size", "12px")
+      .text("Images");
+
+    svg.append("text")
+      .attr("fill", "#000")
+      .attr("x", 40)
+      .attr("y", yTimeSeries-heightBoard+27)
+      .attr("font-family", "sans-serif")
+      .attr("text-anchor", "start")
+      .style("font-size", "12px")
+      .text("Computing time per image (s)");        
+
+ yAxis = d3.svg.axis()
+    .scale(y)
+    .ticks(4)
+    .innerTickSize(-width+100)
+    .outerTickSize(0)
+    .orient("left");
+
+  
+  svg.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + margin*3 + ","+0+")")
+      .style("stroke-dasharray", "1 2")
+      .call(yAxis);
+
+
   svg.append("path")
       .datum(nodes1)
       .attr("class", "path1")
-      .attr("stroke", "#800")
-      .attr("fill", color1)
-      .attr("fill-opacity", 0.25)
+      .attr("stroke", color1)
+      .attr("stroke-width", 0.5)
+      .attr("fill", "#fdd")
+      .attr("fill-opacity", 0.5)
       .attr("d", area);
 
   svg.append("path")
       .datum(nodes2)
       .attr("class", "path2")
-      .attr("fill", color2)
+      .attr("stroke", color2)
+      .attr("stroke-width", 0.5)
+      .attr("fill", "#dff")
       .attr("fill-opacity", 0.5)
-      .attr("d", area);    
-
-  /*g.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-
-  g.append("g")
-      .call(d3.axisLeft(y))
-    .append("text")
-      .attr("fill", "#000")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", "0.71em")
-      .attr("text-anchor", "end")
-      .text("Price ($)");*/
+      .attr("d", area);        
 }
 
 function updateTimeSeries() {
   if(nodes1.length>0 && nodes2.length>0){
     var maxTime = Math.max(nodes1[nodes1.length-1].timeMax, nodes2[nodes2.length-1].timeMax);
-    y.domain([0,maxTime]);
+    y.domain([0,maxTime/timeRatio]);    
+    svg.selectAll("g.y.axis")
+        .call(yAxis);
+    svg.selectAll("g.x.axis")
+        .call(xAxis);      
   }
     
   svg.selectAll(".path1")
       .datum(nodes1)
-      .attr("fill", color1)
-      .attr("fill-opacity", 0.25)
       .attr("d", area);
 
   svg.selectAll(".path2")
       .datum(nodes2)
-      .attr("fill", color2)
-      .attr("fill-opacity", 0.5)
       .attr("d", area);    
 }
 

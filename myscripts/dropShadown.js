@@ -11,7 +11,7 @@ var margin = 12;
 var heightTop = 50;
 var heightRect = width/2-2*margin;
 var heightBoard = 120;
-var height = heightTop+heightRect+3*margin+heightBoard;
+var height = heightTop+heightRect+2.5*margin+heightBoard;
 var color1 = "#a00";
 var color2 = "#088";
 
@@ -113,7 +113,7 @@ svg.append("rect")
     .attr("y", heightTop+heightRect+1.5*margin)
     .attr("rx", 8)
     .attr("ry", 8)
-    .attr("fill", "#bbb")
+    .attr("fill", "#ddd")
     .style("filter", "url(#drop-shadow)");     
 
 //*********************** Text processing ********************
@@ -137,17 +137,59 @@ svg.append("text")
     .attr("text-anchor", "end")
     .style("font-size", "14px")
     .text("0/"+1000);     
-//*********************** Image processing ********************
+//*********************** iamge lines ********************
+
 var radius2 = 20;
+
+svg.append("line")
+  .attr("class", "imageLine1")
+  .style("stroke", color1)
+  .style("stroke-width", 1)
+  .style("stroke-dasharray", "1 2")
+  .attr("x1", width/2-radius2-margin-5)
+  .attr("y1", heightTop+heightRect-radius2-5)
+  .attr("x2", margin*3)
+  .attr("y2", heightTop+heightRect+heightBoard);
+
+svg.append("line")
+  .attr("class", "imageLine2")
+  .style("stroke", color2)
+  .style("stroke-width", 1.5)
+  .style("stroke-dasharray", "1 2")
+  .attr("x1", width/2+radius2+margin+5)
+  .attr("y1", heightTop+heightRect-radius2-5)
+  .attr("x2", margin*3)
+  .attr("y2", heightTop+heightRect+heightBoard);  
+
+//*********************** Image processing ********************
+
 svg.append("circle").attr("class", "processingImage1")
     .attr("cx", width/2-radius2-margin-5)
     .attr("cy", heightTop+heightRect-radius2-5)
     .attr("r", radius2)
-    .style("fill", color1); 
+    .style("fill", color1)
+    .style("stroke", color1);  
 svg.append("circle").attr("class", "processingImage2")
     .attr("cx", width/2+radius2+margin+5)
     .attr("cy", heightTop+heightRect-radius2-5)
     .attr("r", radius2)
-    .style("fill", color2);     
+    .style("fill", color2)
+    .style("stroke", color2);     
+
+svg.append("circle").attr("class", "processingImage3")
+    .attr("cx", margin*3)
+    .attr("cy", heightTop+heightRect+heightBoard)
+    .attr("r", radius2)
+    .style("fill", color1)
+    .style("stroke", color1); 
+svg.append("circle").attr("class", "processingImage4")
+    .attr("cx", margin*3)
+    .attr("cy", heightTop+heightRect+heightBoard)
+    .attr("r", radius2)
+    .style("fill", color2)
+    .style("stroke", color2); 
+
+
+
 
 

@@ -113,7 +113,7 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
 
           interval1 = setInterval(function(){
             update2(count1,nodes1, links1, links11, interval1,computeDis1,updateForce1,redrawImages1)
-          } , 200);
+          } , 500);
 
           interval2 = setInterval(function(){
             update2(count2,nodes2, links2, links22, interval2,computeDis2,updateForce2,redrawImages2)
@@ -233,22 +233,39 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
     } 
     //update processing text
     svg.selectAll(".processingText1")
-      .text(count1+"/"+numImg);
+      .text((count1+1)+"/"+numImg);
     //update processing Image
     svg.selectAll(".processingImage1")
-      .style("fill", "url(#catpattern"+(nod.id+1)+")");    
-      
+      .style("fill", "url(#catpattern"+(nod.id+1)+")");  
+
+    svg.selectAll(".processingImage3")
+      .style("fill", "url(#catpattern"+(nod.id+1)+")");  
+
+    svg.selectAll(".processingImage3").transition().duration(200)
+        .attr("cx",x(nod.id))
+        .attr("cy",y(nod.time/timeRatio));    
+    svg.selectAll(".imageLine1").transition().duration(200)
+        .attr("x2",x(nod.id))
+        .attr("y2",y(nod.time/timeRatio));           
     count1++;
   } 
   else{
     drawScagHistogram(2,count1, width/2+220,94);
     //update processing text
     svg.selectAll(".processingText2")
-      .text(count2+"/"+numImg);
+      .text((count2+1)+"/"+numImg);
     //update processing Image
     svg.selectAll(".processingImage2")
       .style("fill", "url(#catpattern"+(nod.id+1)+")");    
-      
+    svg.selectAll(".processingImage4")
+      .style("fill", "url(#catpattern"+(nod.id+1)+")");    
+    
+    svg.selectAll(".processingImage4").transition().duration(200)
+        .attr("cx",x(nod.id))
+        .attr("cy",y(nod.time/timeRatio));           
+    svg.selectAll(".imageLine2").transition().duration(200)
+        .attr("x2",x(nod.id))
+        .attr("y2",y(nod.time/timeRatio));           
     count2++;
   }   
 }
