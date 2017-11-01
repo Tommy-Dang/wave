@@ -119,7 +119,7 @@ function updateTimeSeries() {
 
 
 
-var w=width/14, h=88; 
+var w=width/15, h=88; 
 scagScale = d3.scale.linear().rangeRound([w, 0])
                     .domain([0, 1]);
 var lineHeight = h/scagnosticList.length;

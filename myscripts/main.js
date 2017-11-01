@@ -259,7 +259,7 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
   else{
     updateTimeSeries();
     if (count2<120)
-      drawScagHistogram(2,count2, width/2+220,94);
+      drawScagHistogram(2,count2, width/2+190,94);
     //update processing text
     svg.selectAll(".processingText2")
       .text((count2+1)+"/"+numImg);
