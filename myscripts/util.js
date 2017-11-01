@@ -177,7 +177,7 @@ function computeDis1(i1, i2){
       var dif1 = Math.abs(dataH[index]["C"+(i1+1)] - dataH[index]["C"+(i2+1)]);
       var dif2 = Math.abs(dataS[index]["C"+(i1+1)] - dataS[index]["C"+(i2+1)]);
       var dif3 = Math.abs(dataB[index]["C"+(i1+1)] - dataB[index]["C"+(i2+1)]);
-      sum += dif1*1.5+dif2+dif3*0.5;
+      sum += dif1*1.2+dif2+dif3*0.2;
     }
     dif += sum;
   }

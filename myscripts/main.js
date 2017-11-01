@@ -220,7 +220,7 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
   updateForce();
   if (interval==interval1){
      updateTimeSeries();
-    if (50<count1 && count1<300)
+    if (50<count1 && count1<200)
       drawScagHistogram(1,count1, 100,94);
 
     // compute x times faster *******************
