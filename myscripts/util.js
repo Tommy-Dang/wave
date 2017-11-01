@@ -96,12 +96,11 @@ function ticked2() {
      node2.each(collide(0.5, nodes2)); //Added to avoid collision
 }
 
-/*
 function getDisconnectedNodes() {
   var arr =[];
-  for (var i = 0; i < links.length; i++) {
-    var id1 = links[i].source.id;
-    var id2 = links[i].target.id;
+  for (var i = 0; i < links2.length; i++) {
+    var id1 = links2[i].source.id;
+    var id2 = links2[i].target.id;
     if (arr.indexOf(id1)<0){
       arr.push(id1);
     }
@@ -111,14 +110,14 @@ function getDisconnectedNodes() {
   }  
 
   var removeList =[];
-  for (var i = 0; i < nodes.length; i++) {
-    if (arr.indexOf(nodes[i].id)<0){
-      removeList.push(nodes[i].id);
+  for (var i = 0; i < nodes2.length; i++) {
+    if (arr.indexOf(nodes2[i].id)<0){
+      removeList.push(nodes2[i].id);
     }
   }  
   console.log("arr=["+arr); 
   console.log("removeList=["+removeList); 
-} */
+} 
 
 function updateForce1() {
   link1 = link1.data(links1);

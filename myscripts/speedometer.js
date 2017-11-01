@@ -32,8 +32,8 @@ function drawSpeedometer(){
   
   var svg2 = d3.select("#speedometer")
                 .append("svg:svg")
-                .attr("width", 300)
-                .attr("height", 300);
+                .attr("width", 252)
+                .attr("height", 214);
 
   
   svg2.append("rect")
