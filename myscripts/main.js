@@ -42,7 +42,7 @@ var force1 = d3.layout.force()
 
 var force2 = d3.layout.force()
     .charge(-radius*4)
-    .gravity(0.13)
+    .gravity(0.15)
     .linkDistance(radius*2+2)
     .linkStrength(function(l){
       return linkScale(l.value);
@@ -219,8 +219,9 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
   }
   updateForce();
   if (interval==interval1){
-    updateTimeSeries();
-    drawScagHistogram(1,count1, 100,94);
+     updateTimeSeries();
+    if (50<count1 && count1<300)
+      drawScagHistogram(1,count1, 100,94);
 
     // compute x times faster *******************
     var index1 = nodes1.length-1;
@@ -256,7 +257,9 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
     count1++;
   } 
   else{
-    drawScagHistogram(2,count2, width/2+220,94);
+    updateTimeSeries();
+    if (count2<120)
+      drawScagHistogram(2,count2, width/2+220,94);
     //update processing text
     svg.selectAll(".processingText2")
       .text((count2+1)+"/"+numImg);

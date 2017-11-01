@@ -119,7 +119,7 @@ function updateTimeSeries() {
 
 
 
-var w=100, h=88; 
+var w=width/14, h=88; 
 scagScale = d3.scale.linear().rangeRound([w, 0])
                     .domain([0, 1]);
 var lineHeight = h/scagnosticList.length;
@@ -241,7 +241,7 @@ function drawScagHistogram(id,indexImage, x_, y_){
     .enter().append("line")
       .attr("class", "gridLineH"+id)
       .style("stroke", function(d){ return color10(d.name);})
-      .style("stroke-width",0.3) 
+      .style("stroke-width",1) 
       .style("stroke-opacity",0.5) 
       .attr("x1", function(d,i) { return x_+scagScale(d.valueH);})
       .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)-hScale(indexImage);})
@@ -253,7 +253,7 @@ function drawScagHistogram(id,indexImage, x_, y_){
     .enter().append("line")
       .attr("class", "gridLineS"+id)
       .style("stroke", function(d){ return color10(d.name);})
-      .style("stroke-width",0.3) 
+      .style("stroke-width",1) 
       .style("stroke-opacity",0.5) 
       .attr("x1", function(d,i) { return x_+w*1.5+scagScale(d.valueS);})
       .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)-lineHeight/2+0.5;})
@@ -265,7 +265,7 @@ function drawScagHistogram(id,indexImage, x_, y_){
     .enter().append("line")
       .attr("class", "gridLineB"+id)
       .style("stroke", function(d){ return color10(d.name);})
-      .style("stroke-width",0.3) 
+      .style("stroke-width",1) 
       .style("stroke-opacity",0.5) 
       .attr("x1", function(d,i) { return x_+w*3+scagScale(d.valueB);})
       .attr("y1", function(d,i) {return yScag+lineHeight*(i%scagnosticList.length)-hScale(1000-indexImage);})
