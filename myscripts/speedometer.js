@@ -6,7 +6,7 @@
  * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
  */
 
-var maxDial = 99;
+var maxDial = 30;
 var gauge = iopctrl.arcslider()
                 .radius(50)
                 .bands(2)
@@ -21,10 +21,10 @@ var yMeter = heightTop+60;
 function drawSpeedometer(){
   gauge.axis().orient("in")
           .normalize(true)
-          .ticks(5)
+          .ticks(7)
           .tickSubdivide(3)
           .tickSize(6, 3, 6)
-          .tickPadding(0)
+          .tickPadding(6)
           .scale(d3.scale.linear()
                   .domain([0, maxDial])
                   .range([-2.1*Math.PI/4, 2.1*Math.PI/4]));

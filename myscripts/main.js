@@ -38,7 +38,7 @@ var force1 = d3.layout.force()
     //.linkStrength(function(l){
     //  return 1;//linkScale(l.value)/2;
     //})
-    .size([width*0.5, heightTop+heightRect]);
+    .size([width*0.5, heightTop/2+heightRect]);
 
 var force2 = d3.layout.force()
     .charge(-radius*4)
@@ -47,7 +47,7 @@ var force2 = d3.layout.force()
     .linkStrength(function(l){
       return linkScale(l.value);
     })
-    .size([width*1.5, heightTop+heightRect]);    
+    .size([width*1.5, heightTop/2+heightRect]);    
 
 var linkScale = d3.scale.linear()
                     .range([1.5,0.4])
@@ -113,7 +113,7 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
 
           interval1 = setInterval(function(){
             update2(count1,nodes1, links1, links11, interval1,computeDis1,updateForce1,redrawImages1)
-          } , 100);
+          } , 200);
 
           interval2 = setInterval(function(){
             update2(count2,nodes2, links2, links22, interval2,computeDis2,updateForce2,redrawImages2)
