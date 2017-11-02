@@ -9,7 +9,7 @@
 var color = d3.scale.category10();
 
 var dataS, dataH, dataB;
-var CONNECTED = 0,  DENSE = 1, CONVEX = 2, SKINNY = 3, COUNT = 4, VERSYMMETRY = 5,  HORSYMMETRY = 6,  MSTLENGTH = 7,  NUMALPHA = 8, UNIFORMALPHA = 9;
+//var CONNECTED = 0,  DENSE = 1, CONVEX = 2, SKINNY = 3, COUNT = 4, VERSYMMETRY = 5,  HORSYMMETRY = 6,  MSTLENGTH = 7,  NUMALPHA = 8, UNIFORMALPHA = 9;
 var scagnosticList = ["Connected","Dense","Convex","Skinny","Count","Vertical Sym","Horizontal Sym","MST length","Num Alpha","Uniform Alpha"];  
 
 var numThred = 5;
@@ -113,7 +113,7 @@ d3.tsv("data/ScagnosticS.txt", function(errorS, dataS_) {
 
           interval1 = setInterval(function(){
             update2(count1,nodes1, links1, links11, interval1,computeDis1,updateForce1,redrawImages1)
-          } , 300);
+          } , 100);
 
           interval2 = setInterval(function(){
             update2(count2,nodes2, links2, links22, interval2,computeDis2,updateForce2,redrawImages2)
@@ -230,8 +230,8 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
       var time2 = nodes2[index1].milliseconds - startTime;
       
       var dif =  nodes1[index1].time/nodes2[index1].time +5;
-      if (dif>20)
-        dif =20;  
+      if (dif>maxDial)
+        dif =maxDial;  
       //var dif =  time1/time2;
 
       gauge.value(dif);
