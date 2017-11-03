@@ -193,7 +193,7 @@ function sim(){
 
    count++;  
    
-   if (count%numLayers==numLayers-1){
+   if (count%(numLayers)==numLayers-1){
        if (Math.round(count/numLayers)%3==2){
           countF =numLayers;
           isForward=false;
@@ -205,7 +205,7 @@ function sim(){
    }
    if (isForward){
     countF++;
-    if (countF==numLayers)
+    if (countF==numLayers+1)
         countF=0;
    }
     else{
