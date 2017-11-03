@@ -91,16 +91,16 @@ svg.append("a")
     .append("image")
     .attr("xlink:href", "images/logo.png")
     .attr("x", width*0.75-100)
-    .attr("y", heightTop+heightRect+20)
+    .attr("y", heightTop+heightRect+50)
     .attr("width", "180")
     .attr("height", "30");
 
-svg.append("image")
+/*svg.append("image")
     .attr("xlink:href", "images/waveSlide.png")
     .attr("x", width*0.55)
     .attr("y", heightTop+heightRect+40)
     .attr("width", width*0.4)
-    .attr("height", width*0.4);   
+    .attr("height", width*0.4);   */
 
 svg.append("image")
     .attr("xlink:href", "images/WAVE_DPU_cay3.png")
@@ -108,8 +108,16 @@ svg.append("image")
     .attr("y", heightTop+heightRect)
     .attr("width", heightRect2)
     .attr("height", heightRect2)
-    .attr("opacity", 0.5);       
+    .attr("opacity", 0.5);   
 
+svg.append("text")
+    .attr("x", width*0.75)
+    .attr("y", heightTop+heightRect+140)
+    .style("fill", color1)
+    .style("text-shadow", "1px 1px 0 rgba(0, 0, 0, 0.7")
+    .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+    .text("WaveFlow Execution");   
 
 //*********************** Text processing ********************
 svg.append("text")
