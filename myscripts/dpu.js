@@ -8,7 +8,7 @@
  
 var width = document.body.clientWidth;
 var margin = 12;
-var heightTop = 40;
+var heightTop = 30;
 var heightRect = 350;
 var heightRect2 = width/2;
 var heightBoard = 0;
@@ -75,7 +75,7 @@ svg.append("rect")
     .attr("stroke", color1)
     .style("filter", "url(#drop-shadow)"); 
 
- svg.append("rect")
+ /*svg.append("rect")
     .attr("width", heightRect2)
     .attr("height", heightRect2)
     .attr("x", margin)
@@ -84,7 +84,7 @@ svg.append("rect")
     .attr("ry", 8)
     .attr("fill", "#000")
     .attr("stroke", "#000")
-    .style("filter", "url(#drop-shadow)");    
+    .style("filter", "url(#drop-shadow)");    */
 
 svg.append("a")
     .attr("xlink:href", "http://wavecomp.ai/")
@@ -103,12 +103,12 @@ svg.append("a")
     .attr("height", width*0.4);   */
 
 svg.append("image")
-    .attr("xlink:href", "images/WAVE_DPU_cay3.png")
+    .attr("xlink:href", "images2/WAVE_DPU_Tommy.png")
     .attr("x", margin)
-    .attr("y", heightTop+heightRect)
+    .attr("y", heightTop+heightRect+margin)
     .attr("width", heightRect2)
     .attr("height", heightRect2)
-    .attr("opacity", 0.5);   
+    .attr("opacity", 0.8);   
 
 svg.append("text")
     .attr("x", width*0.75)
@@ -165,8 +165,8 @@ svg.append("rect")
     .attr("class", "rect2")
     .attr("width", 1)
     .attr("height", 1)
-    .attr("x", margin+heightRect2*0.21)
-    .attr("y", heightTop+heightRect+heightRect2*0.21)
+    .attr("x", margin)
+    .attr("y", heightTop+heightRect+margin)
     .attr("rx", 5)
     .attr("ry", 5)
     .attr("fill", "#a00")
