@@ -32,21 +32,19 @@ function drawTimeSeries() {
   //y.domain([0, d3.max(data, function(d) { return d.close; })]);
   //area.y0(y(0));
   
-  
-
-//Create the Axis
+  //Create the Axis
   xAxis = d3.svg.axis()
     .scale(x)
     .innerTickSize(-4)
     .outerTickSize(-4)
     .orient("bottom");
 
-    svg.append("g")
+  svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + yTimeSeries + ")")
       .call(xAxis);
 
-    svg.append("text")
+  svg.append("text")
       .attr("fill", "#000")
       .attr("x", width-margin-5)
       .attr("y", yTimeSeries-margin)
@@ -55,7 +53,7 @@ function drawTimeSeries() {
       .style("font-size", "12px")
       .text("Images");
 
-    svg.append("text")
+  svg.append("text")
       .attr("fill", "#000")
       .attr("x", 40)
       .attr("y", yTimeSeries-heightBoard+27)

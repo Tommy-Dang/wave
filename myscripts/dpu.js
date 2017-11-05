@@ -9,12 +9,10 @@
 var width = document.body.clientWidth;
 var margin = 12;
 var heightTop = 30;
-var heightRect = 350;
+var heightRect = (width-margin*2)*290/1225;
 var heightRect2 = width/2;
 var heightBoard = 0;
 var height = heightTop+heightRect+heightRect2+2*margin;
-var color1 = "#fff";
-var color2 = "#fff";
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
@@ -23,10 +21,10 @@ var svg = d3.select("body").append("svg")
  svg.append("text")
     .attr("x", width*0.5)
     .attr("y", heightTop*0.75)
-    .style("fill", color1)
+    .style("fill", "#fff")
     .style("text-shadow", "1px 1px 0 rgba(0, 0, 0, 0.7")
     .attr("text-anchor", "middle")
-    .style("font-size", "20px")
+    .style("font-size", "18px")
     .text("Google Inception CNN");   
 
 //*********** Dropdown rectangle format *******************
@@ -66,13 +64,13 @@ feMerge.append("feMergeNode")
         
 svg.append("rect")
     .attr("width", width-margin*2)
-    .attr("height", heightRect)
+    .attr("height", heightRect+margin+5)
     .attr("x", margin)
     .attr("y", heightTop)
     .attr("rx", 8)
     .attr("ry", 8)
     .attr("fill", "#fff")
-    .attr("stroke", color1)
+    .attr("stroke", "#fff")
     .style("filter", "url(#drop-shadow)"); 
 
  /*svg.append("rect")
@@ -105,7 +103,7 @@ svg.append("a")
 svg.append("image")
     .attr("xlink:href", "images2/WAVE_DPU_Tommy.png")
     .attr("x", margin)
-    .attr("y", heightTop+heightRect+margin)
+    .attr("y", heightTop+heightRect+margin*2)
     .attr("width", heightRect2)
     .attr("height", heightRect2)
     .attr("opacity", 0.8);   
@@ -113,7 +111,7 @@ svg.append("image")
 svg.append("text")
     .attr("x", width*0.75)
     .attr("y", heightTop+heightRect+140)
-    .style("fill", color1)
+    .style("fill", "#fff")
     .style("text-shadow", "1px 1px 0 rgba(0, 0, 0, 0.7")
     .attr("text-anchor", "middle")
     .style("font-size", "20px")
@@ -124,7 +122,7 @@ svg.append("text")
     .attr("class", "processingText1")
     .attr("x", margin+5)
     .attr("y", heightTop+15)
-    .style("fill", color1)
+    .style("fill", "#fff")
     .attr("font-family", "sans-serif")
     .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 1")
     .attr("text-anchor", "start")
@@ -134,7 +132,7 @@ svg.append("text")
     .attr("class", "processingText2")
     .attr("x", width-margin-5)
     .attr("y", heightTop+15)
-    .style("fill", color2)
+    .style("fill", "#fff")
     .attr("font-family", "sans-serif")
     .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 1")
     .attr("text-anchor", "end")
@@ -142,31 +140,32 @@ svg.append("text")
     .text("0/"+1000);     
 //*********************** Images from Jin *********************
 svg.append("image")
-    .attr("xlink:href", "images/GoogleInception2.jpg")
+    .attr("xlink:href", "images2/GoogleInception2.jpg")
     .attr("x",margin)
-    .attr("y", heightTop+10)
+    .attr("y", heightTop+margin)
     .attr("width", width-margin*2);
 
 var numLayers =41;
-var stepX = (width-margin*2-30)/numLayers; //41 is the number of layers
+var stepX = (width-margin*2-4)/numLayers; //41 is the number of layers
 svg.append("rect")
     .attr("class", "rect1")
     .attr("width", stepX)
-    .attr("height", heightRect-20)
-    .attr("x", margin+15)
+    .attr("height", heightRect)
+    .attr("x", margin+4)
     .attr("y", heightTop+10)
-    .attr("rx", 8)
-    .attr("ry", 8)
+    .attr("rx", 5)
+    .attr("ry", 5)
     .attr("fill", "#000")
     .attr("fill-opacity", 0.1)
-    .attr("stroke", "#f00"); 
+    .attr("stroke", "#000")
+    .style("stroke-dasharray", "2 2"); 
 
 svg.append("rect")
     .attr("class", "rect2")
     .attr("width", 1)
     .attr("height", 1)
     .attr("x", margin)
-    .attr("y", heightTop+heightRect+margin)
+    .attr("y", heightTop+heightRect+margin*2)
     .attr("rx", 5)
     .attr("ry", 5)
     .attr("fill", "#a00")
@@ -175,18 +174,27 @@ svg.append("rect")
     .attr("stroke-opacity", 0.5)
     .style("filter", "url(#drop-shadow)");     
 
-var speed =100;
+var speed =400;
 //*********************** Simulation ***************************************************************
-var interval1 = setInterval(function(){
-    sim();
-} , speed);
+//var interval1 = setInterval(function(){
+ //   sim();
+//} , speed);
+//*********************** DPU configuration ***************************************************************
+var color0 = "#AAAAAA";
+var color1 = "#5B83EF";
+var color2 = "#BA3C2F";
+var color3 = "#539858";
+var color4 = "#E2B326";
+var n = 32;
 
-var count=0;
-var countF=0;
+
+//*********************** DPU configuration ***************************************************************
+var count=1;
+var countF=1;
 var isForward = true;
 function sim(){
    svg.selectAll(".rect1").transition().duration(speed*0.8)
-        .attr("x", margin+15+countF*stepX);
+        .attr("x", margin+4+countF*stepX);
    
    if (isForward){
         svg.selectAll(".rect2").transition().duration(speed*0.8)
@@ -201,7 +209,7 @@ function sim(){
 
    count++;  
    
-   if (count%(numLayers)==numLayers-1){
+   if (count%(numLayers)==0){
        if (Math.round(count/numLayers)%3==2){
           countF =numLayers;
           isForward=false;
