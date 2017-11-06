@@ -176,30 +176,98 @@ svg.append("rect")
 
 var speed =400;
 //*********************** Simulation ***************************************************************
-//var interval1 = setInterval(function(){
- //   sim();
-//} , speed);
+var interval1 = setInterval(function(){
+    sim();
+} , speed);
 //*********************** DPU configuration ***************************************************************
 var color0 = "#AAAAAA";
-var color1 = "#5B83EF";
-var color2 = "#BA3C2F";
-var color3 = "#539858";
+var color1 = "#5B83EF"; // blue
+var color2 = "#BA3C2F"; // red
+var color3 = "#539858"; // green
 var color4 = "#E2B326";
 var n = 32;
-
+var cellSize = (heightRect2*0.992)/32;
+var colorList=[
+    [color0],
+    [color1],
+    [color2],
+    [color3],
+    [color1],
+    [color1],
+    [color3],
+    [color2],
+    [color1,color1,color2],
+    [color1,color1,color1,color1],
+    [color3],
+    [color1,color1,color2],
+    [color1,color1,color1,color1],
+    [color3],
+    [color2],
+    [color1,color1,color2],
+    [color1,color1,color1,color1],
+    [color3],
+    [color1,color1,color2,color2],
+    [color1,color1,color1,color1,color1],
+    [color3,color1],
+    [color1,color1,color2,color1],
+    [color1,color1,color1,color1,color4],
+    [color3,color0],
+    [color1,color1,color2],
+    [color1,color1,color1,color1],
+    [color3],
+    [color1,color1,color2,color2],
+    [color1,color1,color1,color1,color1],
+    [color3,color1],
+    [color2,color1],
+    [color1,color1,color2,color4],
+    [color1,color1,color1,color1,color0],
+    [color3],
+    [color1,color1,color2],
+    [color1,color1,color1,color1],
+    [color3],
+    [color2],
+    [color1],
+    [color4],
+    [color0],
+];
 
 //*********************** DPU configuration ***************************************************************
 var count=1;
 var countF=1;
 var isForward = true;
+
+var a = []; // List of existing rects
+
+function getNumber(){
+    Math.random();
+}
+
+function addCell(c,color){
+    svg.append("rect")
+        .attr("class", "rect"+c+"-"+c)
+        .attr("width", cellSize-2)
+        .attr("height", cellSize-2)
+        .attr("x", margin+3+cellSize*(Math.round(c/n)))
+        .attr("y", heightTop+heightRect+7+cellSize*(1+c%n))
+        .attr("rx", 1)
+        .attr("ry", 1)
+        .attr("fill", color)
+        .attr("fill-opacity", 0.5)
+        .attr("stroke", color)
+        .attr("stroke-opacity", 0.75)
+        .style("filter", "url(#drop-shadow)");     
+}
+
 function sim(){
    svg.selectAll(".rect1").transition().duration(speed*0.8)
         .attr("x", margin+4+countF*stepX);
    
    if (isForward){
-        svg.selectAll(".rect2").transition().duration(speed*0.8)
-            .attr("width", heightRect2*0.6*countF/(numLayers*1.5))
-            .attr("height", heightRect2*0.6*countF/(numLayers*1.5));;
+        //svg.selectAll(".rect2").transition().duration(speed*0.8)
+        //    .attr("width", heightRect2*0.6*countF/(numLayers*1.5))
+        //    .attr("height", heightRect2*0.6*countF/(numLayers*1.5));
+
+        addCell(count, colorList[countF][0]);    
    }     
    else{
        svg.selectAll(".rect2")
@@ -208,7 +276,6 @@ function sim(){
    }
 
    count++;  
-   
    if (count%(numLayers)==0){
        if (Math.round(count/numLayers)%3==2){
           countF =numLayers;
@@ -229,8 +296,6 @@ function sim(){
         if (countF==-1)
             countF = 0;
     }     
-   
-   
-   console.log(count+" "+countF+" isForward="+isForward +" "+Math.round(count/numLayers));
+   //console.log(count+" "+countF+" isForward="+isForward +" "+Math.round(count/numLayers));
 }
 
