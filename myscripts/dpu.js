@@ -117,27 +117,7 @@ svg.append("text")
     .style("font-size", "20px")
     .text("WaveFlow Execution");   
 
-//*********************** Text processing ********************
-svg.append("text")
-    .attr("class", "processingText1")
-    .attr("x", margin+5)
-    .attr("y", heightTop+15)
-    .style("fill", "#fff")
-    .attr("font-family", "sans-serif")
-    .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 1")
-    .attr("text-anchor", "start")
-    .style("font-size", "14px")
-    .text("0/"+1000); 
-svg.append("text")
-    .attr("class", "processingText2")
-    .attr("x", width-margin-5)
-    .attr("y", heightTop+15)
-    .style("fill", "#fff")
-    .attr("font-family", "sans-serif")
-    .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 1")
-    .attr("text-anchor", "end")
-    .style("font-size", "14px")
-    .text("0/"+1000);     
+
 //*********************** Images from Jin *********************
 svg.append("image")
     .attr("xlink:href", "images2/GoogleInception2.jpg")
@@ -180,7 +160,7 @@ var interval1 = setInterval(function(){
     sim();
 } , speed);
 //*********************** DPU configuration ***************************************************************
-var color0 = "#AAAAAA";
+var color0 = "#444444";
 var color1 = "#5B83EF"; // blue
 var color2 = "#BA3C2F"; // red
 var color3 = "#539858"; // green
@@ -236,26 +216,132 @@ var count=1;
 var countF=1;
 var isForward = true;
 
-var a = []; // List of existing rects
+var list = []; // List of existing rects
 
-function getNumber(){
-    Math.random();
+function getNumbers(){
+    var a = []
+    if (count%3==0){  // 4 cell in a row
+        var x1 = 4*Math.floor(Math.random()*(n/4));
+        var y1 = Math.floor(Math.random()*n);
+        var index = y1*(n+1) +x1;
+        while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0
+            || list.indexOf(index+2)>=0 || list.indexOf(index+3)>=0){
+            x1 = 4*Math.floor(Math.random()*(n/4));
+            y1 = Math.floor(Math.random()*n);
+            index = y1*(n+1) +x1;
+        }
+        var obj1 ={};
+        obj1.x = x1;
+        obj1.y = y1;
+        a.push(obj1);
+        var obj2 ={};
+        obj2.x = x1+1;
+        obj2.y = y1;
+        a.push(obj2);
+        var obj3 ={};
+        obj3.x = x1+2;
+        obj3.y = y1;
+        a.push(obj3);
+        var obj4 ={};
+        obj4.x = x1+3;
+        obj4.y = y1;
+        a.push(obj4);
+
+        //Add to the existing rect list
+        list.push(index);
+        list.push(index+1);
+        list.push(index+2);
+        list.push(index+3);
+    }
+    else if (count%3==1){  // 4 cell in a row
+        var y1 = 4*Math.floor(Math.random()*(n/4));
+        var x1 = Math.floor(Math.random()*n);
+        var index = y1*(n+1) +x1;
+        while (list.indexOf(index)>=0 || list.indexOf(index+n+1)>=0
+            || list.indexOf(index+2*(n+1))>=0 || list.indexOf(index+3*(n+1))>=0){
+            y1 = 4*Math.floor(Math.random()*(n/4));
+            x1 = Math.floor(Math.random()*n);
+            index = y1*(n+1) +x1;
+        }
+        var obj1 ={};
+        obj1.x = x1;
+        obj1.y = y1;
+        a.push(obj1);
+        var obj2 ={};
+        obj2.x = x1;
+        obj2.y = y1+1;
+        a.push(obj2);
+        var obj3 ={};
+        obj3.x = x1;
+        obj3.y = y1+2;
+        a.push(obj3);
+        var obj4 ={};
+        obj4.x = x1;
+        obj4.y = y1+3;
+        a.push(obj4);
+
+        //Add to the existing rect list
+        list.push(index);
+        list.push(index+1*(n+1));
+        list.push(index+2*(n+1));
+        list.push(index+3*(n+1));
+    }
+    else if (count%3==2){  // 4 cell in a row
+        var x1 = 2*Math.floor(Math.random()*(n/2));
+        var y1 = 2*Math.floor(Math.random()*(n/2));
+        var index = y1*(n+1) +x1;
+        while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0
+            || list.indexOf(index+(n+1))>=0 || list.indexOf(index+(n+1)+1)>=0){
+            x1 = 2*Math.floor(Math.random()*(n/2));
+            y1 = 2*Math.floor(Math.random()*(n/2));
+            index = y1*(n+1)+x1;
+        }
+        var obj1 ={};
+        obj1.x = x1;
+        obj1.y = y1;
+        a.push(obj1);
+        var obj2 ={};
+        obj2.x = x1+1;
+        obj2.y = y1;
+        a.push(obj2);
+        var obj3 ={};
+        obj3.x = x1;
+        obj3.y = y1+1;
+        a.push(obj3);
+        var obj4 ={};
+        obj4.x = x1+1;
+        obj4.y = y1+1;
+        a.push(obj4);
+
+        //Add to the existing rect list
+        list.push(index);
+        list.push(index+1);
+        list.push(index+(n+1));
+        list.push(index+(n+1)+1);
+    }
+    return a;
 }
 
-function addCell(c,color){
-    svg.append("rect")
-        .attr("class", "rect"+c+"-"+c)
-        .attr("width", cellSize-2)
-        .attr("height", cellSize-2)
-        .attr("x", margin+3+cellSize*(Math.round(c/n)))
-        .attr("y", heightTop+heightRect+7+cellSize*(1+c%n))
-        .attr("rx", 1)
-        .attr("ry", 1)
-        .attr("fill", color)
-        .attr("fill-opacity", 0.5)
-        .attr("stroke", color)
-        .attr("stroke-opacity", 0.75)
-        .style("filter", "url(#drop-shadow)");     
+function addCells(color){
+    var a = getNumbers();
+    for (var i=0; i<a.length; i++){
+        var xx = margin+3+cellSize*a[i].x;
+        var yy = heightTop+heightRect+margin*2+3+cellSize*a[i].y;
+        var index = a[i].y*(n+1)+a[i].x;
+        svg.append("rect")
+            .attr("class", "cell"+index)
+            .attr("width", cellSize-3)
+            .attr("height", cellSize-3)
+            .attr("x", xx)
+            .attr("y", yy)
+            .attr("rx", 1)
+            .attr("ry", 1)
+            .attr("fill", color)
+            .attr("fill-opacity", 0.5)
+            .attr("stroke", color)
+            .attr("stroke-opacity", 0.75)
+            .style("filter", "url(#drop-shadow)");     
+    }    
 }
 
 function sim(){
@@ -266,8 +352,9 @@ function sim(){
         //svg.selectAll(".rect2").transition().duration(speed*0.8)
         //    .attr("width", heightRect2*0.6*countF/(numLayers*1.5))
         //    .attr("height", heightRect2*0.6*countF/(numLayers*1.5));
-
-        addCell(count, colorList[countF][0]);    
+        for (var i=0;i<colorList[countF].length;i++){
+            addCells(colorList[countF][i]); 
+        }      
    }     
    else{
        svg.selectAll(".rect2")
