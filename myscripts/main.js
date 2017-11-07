@@ -148,7 +148,7 @@ function update2(count,nodes, links, linksTemp, interval,computeDis,updateForce,
       count2++;
     return;  // Skip not connected nodes
   }
-  if (count>=numImg/10) {
+  if (count>=numImg) {
     clearInterval(interval);
     if (interval==interval2)
       getDisconnectedNodes();
