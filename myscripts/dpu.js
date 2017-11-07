@@ -10,7 +10,7 @@ var width = document.body.clientWidth;
 var margin = 12;
 var heightTop = 30;
 var heightRect = (width-margin*2)*290/1225;
-var heightRect2 = width/2;
+var heightRect2 = 600;
 var heightBoard = 0;
 var height = heightTop+heightRect+heightRect2+2*margin;
 
@@ -101,15 +101,15 @@ svg.append("a")
     .attr("height", width*0.4);   */
 
 svg.append("image")
-    .attr("xlink:href", "images2/WAVE_DPU_Tommy.png")
+    .attr("xlink:href", "images2/WAVE_DPU3.png")
     .attr("x", margin)
     .attr("y", heightTop+heightRect+margin*2)
     .attr("width", heightRect2)
     .attr("height", heightRect2)
-    .attr("opacity", 0.8);   
+    .attr("opacity", 0.9);   
 
 svg.append("text")
-    .attr("x", width*0.75)
+    .attr("x", heightRect2+(width-heightRect2)*0.5)
     .attr("y", heightTop+heightRect+140)
     .style("fill", "#fff")
     .style("text-shadow", "1px 1px 0 rgba(0, 0, 0, 0.7")
@@ -160,13 +160,13 @@ var interval1 = setInterval(function(){
     sim();
 } , speed);
 //*********************** DPU configuration ***************************************************************
-var color0 = "#444444";
+var color0 = "#666666";
 var color1 = "#5B83EF"; // blue
 var color2 = "#BA3C2F"; // red
 var color3 = "#539858"; // green
 var color4 = "#E2B326";
 var n = 32;
-var cellSize = (heightRect2*0.992)/32;
+var cellSize = (heightRect2*0.99)/32;
 var colorList=[
     [color0],
     [color1],
@@ -215,12 +215,11 @@ var colorList=[
 var count=1;
 var countF=1;
 var isForward = true;
-
 var list = []; // List of existing rects
 
 function getNumbers(){
     var a = []
-    if (count%3==0){  // 4 cell in a row
+    if (count%4==0){  // 4 cell in a row
         var x1 = 4*Math.floor(Math.random()*(n/4));
         var y1 = Math.floor(Math.random()*n);
         var index = y1*(n+1) +x1;
@@ -253,7 +252,7 @@ function getNumbers(){
         list.push(index+2);
         list.push(index+3);
     }
-    else if (count%3==1){  // 4 cell in a row
+    else if (count%4==1){  // 4 cell in a row
         var y1 = 4*Math.floor(Math.random()*(n/4));
         var x1 = Math.floor(Math.random()*n);
         var index = y1*(n+1) +x1;
@@ -286,7 +285,7 @@ function getNumbers(){
         list.push(index+2*(n+1));
         list.push(index+3*(n+1));
     }
-    else if (count%3==2){  // 4 cell in a row
+    else if (count%4==2){  // 4 cell in a row
         var x1 = 2*Math.floor(Math.random()*(n/2));
         var y1 = 2*Math.floor(Math.random()*(n/2));
         var index = y1*(n+1) +x1;
@@ -319,14 +318,35 @@ function getNumbers(){
         list.push(index+(n+1));
         list.push(index+(n+1)+1);
     }
+    else {//} if (count%4==2){  // 4 cell in a row
+        var x1 = 2*Math.floor(Math.random()*(n/2));
+        var y1 = Math.floor(Math.random()*n);
+        var index = y1*(n+1) +x1;
+        while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0){
+            x1 = 2*Math.floor(Math.random()*(n/2));
+            y1 = Math.floor(Math.random()*n);
+            index = y1*(n+1)+x1;
+        }
+        var obj1 ={};
+        obj1.x = x1;
+        obj1.y = y1;
+        a.push(obj1);
+        var obj2 ={};
+        obj2.x = x1+1;
+        obj2.y = y1;
+        a.push(obj2);
+        //Add to the existing rect list
+        list.push(index);
+        list.push(index+1);
+    }
     return a;
 }
 
 function addCells(color){
     var a = getNumbers();
     for (var i=0; i<a.length; i++){
-        var xx = margin+3+cellSize*a[i].x;
-        var yy = heightTop+heightRect+margin*2+3+cellSize*a[i].y;
+        var xx = margin+4.5+cellSize*a[i].x;
+        var yy = heightTop+heightRect+margin*2+4.5+cellSize*a[i].y;
         var index = a[i].y*(n+1)+a[i].x;
         svg.append("rect")
             .attr("class", "cell"+index)
@@ -337,10 +357,10 @@ function addCells(color){
             .attr("rx", 1)
             .attr("ry", 1)
             .attr("fill", color)
-            .attr("fill-opacity", 0.5)
+            .attr("fill-opacity", 0.75)
             .attr("stroke", color)
-            .attr("stroke-opacity", 0.75)
-            .style("filter", "url(#drop-shadow)");     
+            .attr("stroke-opacity", 0.3)
+            ;//.style("filter", "url(#drop-shadow)");     
     }    
 }
 
