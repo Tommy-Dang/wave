@@ -154,11 +154,27 @@ svg.append("rect")
     .attr("stroke-opacity", 0.5)
     .style("filter", "url(#drop-shadow)");     
 
-var speed =400;
+var speed =200;
 //*********************** Simulation ***************************************************************
 var interval1 = setInterval(function(){
     sim();
 } , speed);
+
+var isSimRunning =true;
+function stopStart(){
+    if (isSimRunning){
+        clearInterval(interval1);
+        document.getElementById('controlButton').innerHTML = "Restart simulation";
+    }
+        
+    else{
+        interval1 = setInterval(function(){
+            sim();
+        } , speed);
+        document.getElementById('controlButton').innerHTML = "Stop simulation";
+    }
+    isSimRunning = !isSimRunning;
+}
 //*********************** DPU configuration ***************************************************************
 var color0 = "#666666";
 var color1 = "#5B83EF"; // blue
@@ -392,17 +408,17 @@ function sim(){
          countF =0;
          isForward=true;
        }
-   }
-   if (isForward){
-    countF++;
-    if (countF==numLayers+1)
-        countF=0;
-   }
+    }
+    if (isForward){
+        countF++;
+        if (countF==numLayers+1)
+            countF=0;
+    }
     else{
         countF--;
         if (countF==-1)
             countF = 0;
     }     
-   //console.log(count+" "+countF+" isForward="+isForward +" "+Math.round(count/numLayers));
+   console.log(count+" "+countF+" isForward="+isForward +" "+Math.round(count/numLayers));
 }
 
