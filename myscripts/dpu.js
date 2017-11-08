@@ -154,6 +154,36 @@ svg.append("rect")
     .attr("stroke-opacity", 0.5)
     .style("filter", "url(#drop-shadow)");     
 
+//*********************** Text processing ********************
+svg.append("text")
+    .attr("class", "processingText1")
+    .attr("x", heightRect2+margin*2)
+    .attr("y", heightTop+heightRect+margin*4)
+    .style("fill", "#fff")
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "start")
+    .style("font-size", "16px")
+    .text("Current layer: 0 / "+numLayers); 
+svg.append("text")
+    .attr("class", "processingText2")
+    .attr("x", heightRect2+margin*2)
+    .attr("y", heightTop+heightRect+margin*4+20)
+    .style("fill", "#fff")
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "start")
+    .style("font-size", "16px")
+    .text("From start: 0");   
+svg.append("text")
+    .attr("class", "processingText3")
+    .attr("x", heightRect2+margin*2)
+    .attr("y", heightTop+heightRect+margin*4+40)
+    .style("fill", "#fff")
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "start")
+    .style("font-size", "16px")
+    .text("DPU ultilization: 0%");         
+
+
 var speed =200;
 //*********************** Simulation ***************************************************************
 var interval1 = setInterval(function(){
@@ -161,10 +191,12 @@ var interval1 = setInterval(function(){
 } , speed);
 
 var isSimRunning =true;
+document.getElementById('controlButton').style.backgroundColor = "#F88";
 function stopStart(){
     if (isSimRunning){
         clearInterval(interval1);
         document.getElementById('controlButton').innerHTML = "Restart simulation";
+        document.getElementById('controlButton').style.backgroundColor = "#8F8";
     }
         
     else{
@@ -172,15 +204,20 @@ function stopStart(){
             sim();
         } , speed);
         document.getElementById('controlButton').innerHTML = "Stop simulation";
+        document.getElementById('controlButton').style.backgroundColor = "#F88";
     }
     isSimRunning = !isSimRunning;
 }
 //*********************** DPU configuration ***************************************************************
-var color0 = "#666666";
-var color1 = "#5B83EF"; // blue
-var color2 = "#BA3C2F"; // red
-var color3 = "#539858"; // green
-var color4 = "#E2B326";
+var color0 = "#444";
+//var color1 = "#5B83EF"; // blue
+var color1 = "#35C"; // blue
+//var color2 = "#BA3C2F"; // red
+var color2 = "#900"; // red
+//var color3 = "#539858"; // green
+var color3 = "#070"; // green
+//var color4 = "#E2B326";
+var color4 = "#B80";
 var n = 32;
 var cellSize = (heightRect2*0.99)/32;
 var colorList=[
@@ -233,17 +270,22 @@ var countF=1;
 var isForward = true;
 var list = []; // List of existing rects
 
-function getNumbers(){
+function getNumbers(count){
     var a = []
     if (count%4==0){  // 4 cell in a row
         var x1 = 4*Math.floor(Math.random()*(n/4));
         var y1 = Math.floor(Math.random()*n);
         var index = y1*(n+1) +x1;
+        var countWhile = 0;     // Count number of tries
         while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0
             || list.indexOf(index+2)>=0 || list.indexOf(index+3)>=0){
             x1 = 4*Math.floor(Math.random()*(n/4));
             y1 = Math.floor(Math.random()*n);
             index = y1*(n+1) +x1;
+            countWhile++;
+            if (countWhile>=10)  // Tries no more than 10 times
+                return [];
+
         }
         var obj1 ={};
         obj1.x = x1;
@@ -272,11 +314,15 @@ function getNumbers(){
         var y1 = 4*Math.floor(Math.random()*(n/4));
         var x1 = Math.floor(Math.random()*n);
         var index = y1*(n+1) +x1;
+        var countWhile = 0;     // Count number of tries
         while (list.indexOf(index)>=0 || list.indexOf(index+n+1)>=0
             || list.indexOf(index+2*(n+1))>=0 || list.indexOf(index+3*(n+1))>=0){
             y1 = 4*Math.floor(Math.random()*(n/4));
             x1 = Math.floor(Math.random()*n);
             index = y1*(n+1) +x1;
+            countWhile++;
+            if (countWhile>=10)  // Tries no more than 10 times
+                return [];
         }
         var obj1 ={};
         obj1.x = x1;
@@ -305,11 +351,15 @@ function getNumbers(){
         var x1 = 2*Math.floor(Math.random()*(n/2));
         var y1 = 2*Math.floor(Math.random()*(n/2));
         var index = y1*(n+1) +x1;
+        var countWhile = 0;     // Count number of tries
         while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0
             || list.indexOf(index+(n+1))>=0 || list.indexOf(index+(n+1)+1)>=0){
             x1 = 2*Math.floor(Math.random()*(n/2));
             y1 = 2*Math.floor(Math.random()*(n/2));
             index = y1*(n+1)+x1;
+            countWhile++;
+            if (countWhile>=10)  // Tries no more than 10 times
+                return [];
         }
         var obj1 ={};
         obj1.x = x1;
@@ -338,10 +388,14 @@ function getNumbers(){
         var x1 = 2*Math.floor(Math.random()*(n/2));
         var y1 = Math.floor(Math.random()*n);
         var index = y1*(n+1) +x1;
+        var countWhile = 0;     // Count number of tries
         while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0){
             x1 = 2*Math.floor(Math.random()*(n/2));
             y1 = Math.floor(Math.random()*n);
             index = y1*(n+1)+x1;
+            countWhile++;
+            if (countWhile>=10)  // Tries no more than 10 times
+                return [];
         }
         var obj1 ={};
         obj1.x = x1;
@@ -358,32 +412,51 @@ function getNumbers(){
     return a;
 }
 
+var cellPadding = 2.7;
 function addCells(color){
-    var a = getNumbers();
+    var a = getNumbers(count);
+    var b = getNumbers(count+1);
+    for (var i=0; i<b.length; i++){
+        a.push(b[i]);
+    }    
+    
     for (var i=0; i<a.length; i++){
-        var xx = margin+4.5+cellSize*a[i].x;
-        var yy = heightTop+heightRect+margin*2+4.5+cellSize*a[i].y;
+        var xx = margin+5.5+cellSize*a[i].x;
+        var yy = heightTop+heightRect+margin*2+5.5+cellSize*a[i].y;
         var index = a[i].y*(n+1)+a[i].x;
         svg.append("rect")
             .attr("class", "cell"+index)
-            .attr("width", cellSize-3)
-            .attr("height", cellSize-3)
-            .attr("x", xx)
-            .attr("y", yy)
+            .attr("width", cellSize-cellPadding)
+            .attr("height", cellSize-cellPadding)
+            .attr("x", xx-(a[i].x%4)*cellPadding/3)
+            .attr("y", yy-(a[i].y%4)*cellPadding/3)
             .attr("rx", 1)
             .attr("ry", 1)
             .attr("fill", color)
-            .attr("fill-opacity", 0.75)
+            .attr("fill-opacity", 0.8)
             .attr("stroke", color)
-            .attr("stroke-opacity", 0.3)
+            .attr("stroke-opacity", 0.4)
             ;//.style("filter", "url(#drop-shadow)");     
     }    
 }
 
 function sim(){
    svg.selectAll(".rect1").transition().duration(speed*0.8)
-        .attr("x", margin+4+countF*stepX);
-   
+        .attr("x", margin+4+countF*stepX)
+        .attr("height", function (d){
+            if (countF<29)
+                return heightRect;
+            else
+                return heightRect-(countF-29)*(heightRect/22);
+        });
+    svg.selectAll(".processingText1")
+        .text("Current layer: "+countF+" / "+numLayers); 
+    svg.selectAll(".processingText2")
+        .text("From start: "+count); 
+
+    var ultilization = Math.round((list.length*100)/(n*n))    
+    svg.selectAll(".processingText3")
+        .text("DPU ultilization: "+ultilization+"%");          
    if (isForward){
         //svg.selectAll(".rect2").transition().duration(speed*0.8)
         //    .attr("width", heightRect2*0.6*countF/(numLayers*1.5))
