@@ -533,10 +533,8 @@ function removeCells(percent){
     }
 }
 
-
+var timeArray = [];
 function sim(){
-    if (count==1)
-        drawTimeSeries();
     svg.selectAll(".rect1").transition().duration(speed*0.8)
         .attr("x", margin+4+countF*stepX)
         .attr("height", function (d){
@@ -555,19 +553,27 @@ function sim(){
     svg.selectAll(".processingText2")
         .text("From start: "+count); 
 
-    var ultilization = Math.round((list.length*100)/(n*n))    
+    var utilization = Math.round((list.length*100)/(n*n))    
     svg.selectAll(".processingText3")
-        .text("DPU ultilization: "+ultilization+"%"); 
+        .text("DPU utilization: "+utilization+"%"); 
 
     svg.selectAll(".processingText4")
         .text("isForward: "+isForward); 
                      
     for (var i=0;i<colorList[countF].length;i++){
         addCells(colorList[countF][i]); 
-    }      
-   /*svg.selectAll(".rect2")
-        .attr("width", heightRect2*0.6*countF/(numLayers*1.5))
-        .attr("height", heightRect2*0.6*numLayers/(numLayers));; */
+    }   
+    var obj ={};
+    obj.count = count;
+    obj.utilization = utilization;
+    timeArray.push(obj)    
+   
+   //******************************** Time series ************************************ 
+   if (count==1)
+        drawTimeSeries();
+    else if (count>1){
+        updateTimeSeries();
+    }
 
    count++;  
    //console.log(count+ " 1  countF="+countF+ " isForward="+isForward);

@@ -7,25 +7,26 @@
  */
 
 var heightBoard =200;
-var yTimeSeries = heightTop+heightRect+heightBoard*2+20;
+var yTimeSeries = heightTop+heightRect+heightBoard*2+30;
 var color10 = d3.scale.category10();
 
 
 var x = d3.scale.linear()
-        .range([heightRect2+margin*2,width-heightRect2/2])
+        .range([heightRect2+margin*2+30,heightRect2+(width-heightRect2-margin*3)])
         .domain([0, 1000]); 
 
 var y = d3.scale.linear()
         .range([yTimeSeries,yTimeSeries-heightBoard*0.85])
-        .domain([0, 1]); 
+        .domain([0, 100]); 
 var xAxis, yAxis;
 
 var timeRatio =2000;
+
 var area = d3.svg.area()
     .interpolate("monotone")
-    .x(function(d) { return x(d.id); })
+    .x(function(d) { return x(d.count); })
     .y0(yTimeSeries)
-    .y1(function(d) { return y(d.time/timeRatio); });
+    .y1(function(d) { return y(d.utilization); });
 
 
 function drawTimeSeries() {
@@ -52,12 +53,12 @@ function drawTimeSeries() {
 
   svg.append("text")
       .attr("fill", "#000")
-      .attr("x", heightRect2+margin*2+40)
+      .attr("x", heightRect2+margin*2+35)
       .attr("y", yTimeSeries-heightBoard+27)
       .attr("font-family", "sans-serif")
       .attr("text-anchor", "start")
       .style("font-size", "12px")
-      .text("DPU utilization");        
+      .text("DPU utilization (%)");        
 
  yAxis = d3.svg.axis()
     .scale(y)
@@ -69,31 +70,30 @@ function drawTimeSeries() {
   
   svg.append("g")
       .attr("class", "y axis")
-      .attr("transform", "translate(" + (heightRect2+margin*2+20)+ ","+0+")")
+      .attr("transform", "translate(" + (heightRect2+margin*2+30)+ ","+0+")")
       .style("stroke-dasharray", "1 2")
       .call(yAxis);
 
 
   svg.append("path")
-      .datum([])
+      .datum(timeArray)
       .attr("class", "path1")
-      .attr("stroke", color1)
-      .attr("stroke-width", 0.5)
-      .attr("fill", "#fdd")
-      .attr("fill-opacity", 0.5)
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1)
+      .attr("fill", "#fff")
+      .attr("fill-opacity", 0.92)
       .attr("d", area);
-
-  svg.append("path")
-      .datum([])
-      .attr("class", "path2")
-      .attr("stroke", color2)
-      .attr("stroke-width", 0.5)
-      .attr("fill", "#dff")
-      .attr("fill-opacity", 0.5)
-      .attr("d", area);        
 }
 
 function updateTimeSeries() {
+  x.domain([0,count]);  
+  svg.selectAll("g.x.axis")
+        .call(xAxis);        
+  
+  svg.selectAll(".path1")
+      .datum(timeArray)
+      .attr("d", area);
+
   /*if(nodes1.length>0 && nodes2.length>0){
     var maxTime = Math.max(nodes1[nodes1.length-1].timeMax, nodes2[nodes2.length-1].timeMax);
     y.domain([0,maxTime/timeRatio]);    
@@ -103,9 +103,7 @@ function updateTimeSeries() {
         .call(xAxis);      
   }
     
-  svg.selectAll(".path1")
-      .datum(nodes1)
-      .attr("d", area);
+  
 
   svg.selectAll(".path2")
       .datum(nodes2)
