@@ -11,7 +11,7 @@ var margin = 12;
 var heightTop = 30;
 var heightRect = (width-margin*2)*290/1225;
 var heightRect2 = 600;
-var heightBoard = 0;
+var heightBoard = 300;
 var height = heightTop+heightRect+heightRect2+2*margin;
 
 var svg = d3.select("body").append("svg")
@@ -73,16 +73,22 @@ svg.append("rect")
     .attr("stroke", "#fff")
     .style("filter", "url(#drop-shadow)"); 
 
- /*svg.append("rect")
-    .attr("width", heightRect2)
-    .attr("height", heightRect2)
-    .attr("x", margin)
-    .attr("y", heightTop+heightRect+margin)
-    .attr("rx", 8)
-    .attr("ry", 8)
-    .attr("fill", "#000")
-    .attr("stroke", "#000")
-    .style("filter", "url(#drop-shadow)");    */
+// ********************************************* Time series *********************************************
+var timeSeriesWidth = width>heightRect2+margin*3;
+if (timeSeriesWidth>0){
+    svg.append("rect")
+        .attr("width", width-heightRect2-margin*3)
+        .attr("height", heightBoard)
+        .attr("x", heightRect2+margin*2)
+        .attr("y", heightTop+heightRect+margin+150)
+        .attr("rx", 8)
+        .attr("ry", 8)
+        .attr("fill", "#ddd")
+        .attr("stroke", "#000")
+        .style("filter", "url(#drop-shadow)");    
+}
+else
+    timeSeriesWidth=0;
 
 svg.append("a")
     .attr("xlink:href", "http://wavecomp.ai/")
@@ -529,7 +535,9 @@ function removeCells(percent){
 
 
 function sim(){
-   svg.selectAll(".rect1").transition().duration(speed*0.8)
+    if (count==1)
+        drawTimeSeries();
+    svg.selectAll(".rect1").transition().duration(speed*0.8)
         .attr("x", margin+4+countF*stepX)
         .attr("height", function (d){
             if (countF<29)
@@ -588,5 +596,6 @@ function sim(){
    // console.log(count+ " 3  countF="+countF+ " isForward="+isForward);
    //console.log(count+" "+countF+" isForward="+isForward +" "+Math.round(count/numLayers));
 }
+
 
 
