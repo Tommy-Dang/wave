@@ -289,20 +289,20 @@ var count=1;
 var countF=1;
 var isForward = true;
 var list = []; // List of existing rects
-var numTries = 5000;
-function getNumbers(count){
+var numTries = 50;
+function getNumbers(type){
     var a = []
     var nX =n;
     var nY =n;
 
     if (isForward){
-        nX = 4+countF*0.6;
-        nY = 4+countF*0.6;
+        nX = 6+countF*0.55;
+        nY = 6+countF*0.55;
     }
     else{
-        nX = 4+(numLayers-countF)*0.72;
+        nX = 4+(numLayers-countF)*0.66;
     }
-    if (count%4==0){  // 4 cell in a row
+    if (type%4==0){  // 4 cell in a row
         var x1 = 4*Math.floor(Math.random()*(nX/4));
         var y1 = Math.floor(Math.random()*nY);
         var index = y1*(n+1) +x1;
@@ -339,47 +339,73 @@ function getNumbers(count){
         list.push(index+2);
         list.push(index+3);
     }
-    else if (count%4==1){  // 4 cell in a column
-        var y1 = 4*Math.floor(Math.random()*(nY/4));
-        var x1 = Math.floor(Math.random()*nX);
-        var index = y1*(n+1) +x1;
-        var countWhile = 0;     // Count number of tries
-        while (list.indexOf(index)>=0 || list.indexOf(index+n+1)>=0
-            || list.indexOf(index+2*(n+1))>=0 || list.indexOf(index+3*(n+1))>=0){
-            y1 = 4*Math.floor(Math.random()*(nY/4));
-            x1 = Math.floor(Math.random()*nX);
-            index = y1*(n+1) +x1;
-            countWhile++;
-            if (countWhile>=numTries)  // Tries no more than 10 times
-                return [];
+    else if (type%4==1){  // 4 cell in a column
+        if (isForward) {     //**************** BACKWARD ********************
+            var y1 = 2*Math.floor(Math.random()*(nY/2));
+            var x1 = Math.floor(Math.random()*nX);
+            var index = y1*(n+1) +x1;
+            var countWhile = 0;     // Count number of tries
+            while (list.indexOf(index)>=0 || list.indexOf(index+n+1)>=0){
+                y1 = 2*Math.floor(Math.random()*(nY/2));
+                x1 = Math.floor(Math.random()*nX);
+                index = y1*(n+1) +x1;
+                countWhile++;
+                if (countWhile>=numTries)  // Tries no more than 10 times
+                    return [];
+            }
+            var obj1 ={};
+            obj1.x = x1;
+            obj1.y = y1;
+            a.push(obj1);
+            var obj2 ={};
+            obj2.x = x1;
+            obj2.y = y1+1;
+            a.push(obj2);
+
+            //Add to the existing rect list
+            list.push(index);
+            list.push(index+1*(n+1));
+        
         }
-        var obj1 ={};
-        obj1.x = x1;
-        obj1.y = y1;
-        a.push(obj1);
-        var obj2 ={};
-        obj2.x = x1;
-        obj2.y = y1+1;
-        a.push(obj2);
-        var obj3 ={};
-        obj3.x = x1;
-        obj3.y = y1+2;
-        a.push(obj3);
-        if (!isForward) {     //**************** BACKWARD ********************
+        else{
+            var y1 = 4*Math.floor(Math.random()*(nY/4));
+            var x1 = Math.floor(Math.random()*nX);
+            var index = y1*(n+1) +x1;
+            var countWhile = 0;     // Count number of tries
+            while (list.indexOf(index)>=0 || list.indexOf(index+n+1)>=0
+                || list.indexOf(index+2*(n+1))>=0 || list.indexOf(index+3*(n+1))>=0){
+                y1 = 4*Math.floor(Math.random()*(nY/4));
+                x1 = Math.floor(Math.random()*nX);
+                index = y1*(n+1) +x1;
+                countWhile++;
+                if (countWhile>=numTries)  // Tries no more than 10 times
+                    return [];
+            }
+            var obj1 ={};
+            obj1.x = x1;
+            obj1.y = y1;
+            a.push(obj1);
+            var obj2 ={};
+            obj2.x = x1;
+            obj2.y = y1+1;
+            a.push(obj2);
+            var obj3 ={};
+            obj3.x = x1;
+            obj3.y = y1+2;
+            a.push(obj3);
             var obj4 ={};
             obj4.x = x1;
             obj4.y = y1+3;
             a.push(obj4);
+            
+             //Add to the existing rect list
+            list.push(index);
+            list.push(index+1*(n+1));
+            list.push(index+2*(n+1));
+            list.push(index+3*(n+1));       
         }
-
-        //Add to the existing rect list
-        list.push(index);
-        list.push(index+1*(n+1));
-        list.push(index+2*(n+1));
-        if (!isForward)      //**************** BACKWARD ********************
-            list.push(index+3*(n+1));     
     }
-    else if (count%4==2){  // 4 cell rect
+    else if (type%4==2){  // 4 cell rect
         var x1 = 2*Math.floor(Math.random()*(nX/2));
         var y1 = 2*Math.floor(Math.random()*(nY/2));
         var index = y1*(n+1) +x1;
@@ -444,21 +470,21 @@ function getNumbers(count){
         }
         else{   //**************** BACKWARD ********************
                 // Add 6 cells: 2 rows 3 columns    
-            var x1 = 3*Math.floor(Math.random()*((nX-3)/3));
+            var x1 = 3*Math.floor(Math.random()*(nX/3));
             var y1 = 2*Math.floor(Math.random()*(nY/2));
             var index = y1*(n+1) +x1;
             var countWhile = 0;     // Count number of tries
             while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0 || list.indexOf(index+2)>=0
                 || list.indexOf(index+(n+1))>=0 || list.indexOf(index+(n+1)+1)>=0
                 || list.indexOf(index+(n+1)+2)>=0    ){
-                x1 = 3*Math.floor(Math.random()*((nX-3)/3));
+                x1 = 3*Math.floor(Math.random()*(nX/3));
                 y1 = 2*Math.floor(Math.random()*(nY/2));
                 index = y1*(n+1)+x1;
                 countWhile++;
                 svg.selectAll(".processingText5")
                     .text("countWhile: "+countWhile); 
      
-                if (countWhile>=numTries)  {// Tries no more than 20 times
+                if (countWhile>=numTries*10)  {// Tries no more than 20 times
                     return [];
                 }    
             }
@@ -502,16 +528,18 @@ function getNumbers(count){
 var cellPadding = 1;
 function addCells(color){
     var a = getNumbers(count);
-    //if (isForward && (count+1)%4!=0){  // On FORWARD, Skip adding cells in a row to reduce the number of cells
     if (isForward){  // On FORWARD, Skip adding cells in a row to reduce the number of cells
-          var b = getNumbers(count+1);
+        var b = getNumbers(3);
         for (var i=0; i<b.length; i++){
             a.push(b[i]);
         }
+        var c = getNumbers(1);
+        for (var i=0; i<c.length; i++){
+            a.push(c[i]);
+        }
     } 
-    //else if (!isForward && (count+1)%4!=0){   //**************** BACKWARD ********************
     else if (!isForward){   //**************** BACKWARD ********************
-        var b = getNumbers(count+1);
+        var b = getNumbers(3);
         for (var i=0; i<b.length; i++){
             a.push(b[i]);
         }
