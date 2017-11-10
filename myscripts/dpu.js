@@ -533,8 +533,19 @@ function removeCells(percent){
     }
 }
 
-var timeArray = [];
+var timeArrayForward = [];
+var timeArrayBackward = [];
+var firstTime = true;
 function sim(){
+    // Reset counter after a while
+    if (timeArrayForward.length>6*numLayers){
+        timeArrayForward =[];
+        timeArrayBackward =[];
+        count=1;
+        countF=1;
+    }
+
+
     svg.selectAll(".rect1").transition().duration(speed*0.8)
         .attr("x", margin+4+countF*stepX)
         .attr("height", function (d){
@@ -563,15 +574,30 @@ function sim(){
     for (var i=0;i<colorList[countF].length;i++){
         addCells(colorList[countF][i]); 
     }   
-    var obj ={};
-    obj.count = count;
-    obj.utilization = utilization;
-    timeArray.push(obj)    
+    
+        
+    var obj1 ={};
+    obj1.count = count;
+    obj1.utilization = utilization;
+    var obj2 ={};
+    obj2.count = count;
+    obj2.utilization = 0;
+    if (isForward){
+        timeArrayForward.push(obj1);
+        timeArrayBackward.push(obj2);   
+    }
+    else{
+        timeArrayForward.push(obj2);
+        timeArrayBackward.push(obj1);
+    }
+        
    
    //******************************** Time series ************************************ 
-   if (count==1)
+   if (firstTime){
         drawTimeSeries();
-    else if (count>1){
+        firstTime = false;
+    }
+    else {
         updateTimeSeries();
     }
 

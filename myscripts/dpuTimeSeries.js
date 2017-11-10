@@ -76,13 +76,21 @@ function drawTimeSeries() {
 
 
   svg.append("path")
-      .datum(timeArray)
+      .datum(timeArrayForward)
       .attr("class", "path1")
       .attr("stroke", "#000")
       .attr("stroke-width", 1)
       .attr("fill", "#fff")
-      .attr("fill-opacity", 0.92)
+      .attr("fill-opacity", 0.95)
       .attr("d", area);
+  svg.append("path")
+      .datum(timeArrayBackward)
+      .attr("class", "path2")
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1)
+      .attr("fill", "#000")
+      .attr("fill-opacity", 0.5)
+      .attr("d", area);    
 }
 
 function updateTimeSeries() {
@@ -91,7 +99,11 @@ function updateTimeSeries() {
         .call(xAxis);        
   
   svg.selectAll(".path1")
-      .datum(timeArray)
+      .datum(timeArrayForward)
+      .attr("d", area);
+
+  svg.selectAll(".path2")
+      .datum(timeArrayBackward)
       .attr("d", area);
 
   /*if(nodes1.length>0 && nodes2.length>0){
