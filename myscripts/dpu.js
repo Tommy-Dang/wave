@@ -75,7 +75,7 @@ svg.append("rect")
 
 // ********************************************* Time series *********************************************
 var timeSeriesWidth = width>heightRect2+margin*3;
-var yTimeSeries = heightTop+heightRect+margin+200;
+var yTimeSeries = heightTop+heightRect+margin+240;
 if (timeSeriesWidth>0){
     svg.append("rect")
         .attr("width", width-heightRect2-margin*3)
@@ -155,6 +155,9 @@ svg.append("rect")
     .style("filter", "url(#drop-shadow)");     
 
 //*********************** Text processing ********************
+var ww= 300;  
+var startRect =  heightRect2+margin*2+100;
+var startRectY =  heightTop+heightRect+margin*4+130;
 svg.append("text")
     .attr("class", "processingText1")
     .attr("x", heightRect2+margin*2)
@@ -184,24 +187,129 @@ svg.append("text")
     .style("font-size", "16px")
     .text("DPU ultilization: 0%");         
 
+//************* Forward ******************
 svg.append("text")
-    .attr("class", "processingText4")
+    .attr("class", "processingTextF1")
     .attr("x", heightRect2+margin*2)
-    .attr("y", heightTop+heightRect+margin*4+150)
+    .attr("y", startRectY)
     .style("fill", "#fff")
     .attr("font-family", "sans-serif")
     .attr("text-anchor", "start")
     .style("font-size", "16px")
-    .text("");         
+    .text("FORWARD"); 
+
+svg.append("text")
+    .attr("class", "processingTextF2")
+    .attr("x", heightRect2+margin*2+ww+104)
+    .attr("y", startRectY)
+    .style("fill", "#000")
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "start")
+    .style("font-size", "12px")
+    .text("100%"); 
+
+svg.append("rect")
+    .attr("class", "rectF")
+    .attr("x", startRect)
+    .attr("y", startRectY-15)
+    .style("fill", "#aaa")
+    .style("fill-opacity", 0.5)
+    .style("stroke", "#000")
+    .attr("height", 20)
+    .attr("width", ww);      
+
+svg.append("rect")
+    .attr("class", "rectF1")
+    .attr("x", startRect+1)
+    .attr("y", startRectY-14)
+    .style("fill", "#fff")
+    .attr("height", 18)
+    .attr("width", 0);   
+
+svg.append("line")
+    .attr("class", "lineF")
+    .attr("x1", startRect)
+    .attr("y1", startRectY-14)
+    .attr("x2", startRect)
+    .attr("y2", startRectY+11)
+    .style("stroke", "#000")
+    .style("stroke-width", 1.4)
+    .style("stroke-dasharray", "2 2");         
+svg.append("text")
+    .attr("class", "processingTextF3")
+    .attr("x", startRect-29)
+    .attr("y", startRectY+18)
+    .style("fill", "#000")
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "start")
+    .style("font-size", "12px")
+    .text("max = ");
+
+//************* Backward ******************
+svg.append("text")
+    .attr("class", "processingTextB1")
+    .attr("x", heightRect2+margin*2)
+    .attr("y", startRectY+45)
+    .style("fill", "#000")
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "start")
+    .style("font-size", "16px")
+    .text("BACKWARD"); 
+
+svg.append("text")
+    .attr("class", "processingTextF2")
+    .attr("x", startRect+ww+4)
+    .attr("y", startRectY+45)
+    .style("fill", "#000")
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "start")
+    .style("font-size", "12px")
+    .text("100%"); 
+
+svg.append("rect")
+    .attr("class", "rectB")
+    .attr("x", startRect)
+    .attr("y", startRectY+30)
+    .style("fill", "#aaa")
+    .style("fill-opacity", 0.5)
+    .style("stroke", "#000")
+    .attr("height", 20)
+    .attr("width", ww);      
+svg.append("rect")
+    .attr("class", "rectB1")
+    .attr("x", startRect)
+    .attr("y", startRectY+31)
+    .style("fill", "#000")
+    .style("fill-opacity", 0.5)
+    .attr("height", 18)
+    .attr("width", 0);                 
+svg.append("line")
+    .attr("class", "lineB")
+    .attr("x1", startRect)
+    .attr("y1", startRectY+30)
+    .attr("x2", startRect)
+    .attr("y2", startRectY+56)
+    .style("stroke", "#000")
+    .style("stroke-width", 1.4)
+    .style("stroke-dasharray", "2 2");         
+svg.append("text")
+    .attr("class", "processingTextB3")
+    .attr("x", startRect-29)
+    .attr("y", startRectY+63)
+    .style("fill", "#000")
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "start")
+    .style("font-size", "12px")
+    .text("max = 0%");
 
 svg.append("text")
     .attr("class", "processingText5")
     .attr("x", heightRect2+margin*2)
-    .attr("y", heightTop+heightRect+margin*4+470)
+    .attr("y", heightTop+heightRect+margin*4+495)
     .style("fill", "#fff")
     .attr("font-family", "sans-serif")
     .attr("text-anchor", "start")
-    .style("font-size", "16px")
+    .style("font-size", "14px")
     .text("Processing");         
 
 var speed =100;
@@ -300,7 +408,7 @@ function getNumbers(type){
         nY = 6+countF*0.55;
     }
     else{
-        nX = 4+(numLayers-countF)*0.66;
+        nX = 4+(numLayers-countF)*0.65;
     }
     if (type%4==0){  // 4 cell in a row
         var x1 = 4*Math.floor(Math.random()*(nX/4));
@@ -482,7 +590,7 @@ function getNumbers(type){
                 index = y1*(n+1)+x1;
                 countWhile++;
                 svg.selectAll(".processingText5")
-                    .text("countWhile: "+countWhile); 
+                    .text("Number of tries to allocate larger blocks: "+countWhile); 
      
                 if (countWhile>=numTries*10)  {// Tries no more than 20 times
                     return [];
@@ -578,13 +686,18 @@ function removeCells(percent){
 var timeArrayForward = [];
 var timeArrayBackward = [];
 var firstTime = true;
+var maxUtilizationF =0;
+var maxUtilizationB =0;
+
 function sim(){
     // Reset counter after a while
-    if (timeArrayForward.length>9*numLayers){
+    if (timeArrayForward.length>10*numLayers){
         timeArrayForward =[];
         timeArrayBackward =[];
         count=1;
         countF=1;
+        maxUtilizationF =0;
+        maxUtilizationB =0;
     }
 
 
@@ -598,10 +711,7 @@ function sim(){
         });
     svg.selectAll(".processingText1")
         .text(function(){
-            if (isForward)
-                return "Current layer: "+countF+" / "+numLayers + " , processing FORWARD"; 
-            else
-                return "Current layer: "+countF+" / "+numLayers + " , processing BACKWARD"; 
+            return "Current layer: "+countF+" / "+numLayers; 
         }); 
     svg.selectAll(".processingText2")
         .text("From start: "+count); 
@@ -610,8 +720,34 @@ function sim(){
     svg.selectAll(".processingText3")
         .text("DPU utilization: "+utilization+"%"); 
 
-    //svg.selectAll(".processingText4")
-    //    .text("isForward: "+isForward); 
+    if (isForward){
+        if (utilization>maxUtilizationF)
+            maxUtilizationF=utilization;
+        svg.selectAll(".rectF1")
+            .attr("width", (utilization/100)*ww); 
+        svg.selectAll(".rectB1")
+            .attr("width", 0);
+        svg.selectAll(".lineF")
+            .attr("x1", startRect+(maxUtilizationF/100)*ww+1)
+            .attr("x2", startRect+(maxUtilizationF/100)*ww+1);    
+        svg.selectAll(".processingTextF3")
+            .attr("x", startRect+(maxUtilizationF/100)*ww-29)
+            .text("max = "+maxUtilizationF+"%");          
+    }
+    else{
+        if (utilization>maxUtilizationB)
+            maxUtilizationB=utilization;
+        svg.selectAll(".rectF1")
+            .attr("width", 0); 
+        svg.selectAll(".rectB1")
+            .attr("width", (utilization/100)*ww);     
+        svg.selectAll(".lineB")
+            .attr("x1", startRect+(maxUtilizationB/100)*ww+1)
+            .attr("x2", startRect+(maxUtilizationB/100)*ww+1);    
+        svg.selectAll(".processingTextB3")
+            .attr("x", startRect+(maxUtilizationB/100)*ww-29)
+            .text("max = "+maxUtilizationB+"%");     
+    }    
                      
     for (var i=0;i<colorList[countF].length;i++){
         addCells(colorList[countF][i]); 
