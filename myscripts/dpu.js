@@ -11,7 +11,7 @@ var margin = 12;
 var heightTop = 30;
 var heightRect = (width-margin*2)*290/1225;
 var heightRect2 = 600;
-var heightBoard = 300;
+var heightBoard = 250;
 var height = heightTop+heightRect+heightRect2+2*margin;
 
 var svg = d3.select("body").append("svg")
@@ -75,15 +75,16 @@ svg.append("rect")
 
 // ********************************************* Time series *********************************************
 var timeSeriesWidth = width>heightRect2+margin*3;
+var yTimeSeries = heightTop+heightRect+margin+200;
 if (timeSeriesWidth>0){
     svg.append("rect")
         .attr("width", width-heightRect2-margin*3)
-        .attr("height", heightBoard)
+        .attr("height", heightBoard+10)
         .attr("x", heightRect2+margin*2)
-        .attr("y", heightTop+heightRect+margin+150)
+        .attr("y", yTimeSeries)
         .attr("rx", 8)
         .attr("ry", 8)
-        .attr("fill", "#ddd")
+        .attr("fill", "#bbb")
         .attr("stroke", "#000")
         .style("filter", "url(#drop-shadow)");    
 }
@@ -109,12 +110,13 @@ svg.append("text")
     .text("WaveFlow Execution");   
 
 svg.append("image")
-    .attr("xlink:href", "images2/WAVE_DPU3.png")
+    //.attr("xlink:href", "images2/WAVE_DPU3.png")
+    .attr("xlink:href", "images/WAVE_DPU_cay4.png")
     .attr("x", margin)
     .attr("y", heightTop+heightRect+margin*2)
     .attr("width", heightRect2)
     .attr("height", heightRect2)
-    .attr("opacity", 0.9);   
+    .attr("opacity", 0.5);   
 
 //*********************** Images from Jin *********************
 svg.append("image")
@@ -190,12 +192,12 @@ svg.append("text")
     .attr("font-family", "sans-serif")
     .attr("text-anchor", "start")
     .style("font-size", "16px")
-    .text("Processing");         
+    .text("");         
 
 svg.append("text")
     .attr("class", "processingText5")
     .attr("x", heightRect2+margin*2)
-    .attr("y", heightTop+heightRect+margin*4+170)
+    .attr("y", heightTop+heightRect+margin*4+470)
     .style("fill", "#fff")
     .attr("font-family", "sans-serif")
     .attr("text-anchor", "start")
@@ -237,7 +239,7 @@ var color3 = "#006f00"; // green
 //var color4 = "#E2B326";
 var color4 = "#B80";
 var n = 32;
-var cellSize = (heightRect2*0.99)/32;
+var cellSize = (heightRect2*0.655)/32;
 var colorList=[
     [color0],
     [color1],
@@ -287,21 +289,31 @@ var count=1;
 var countF=1;
 var isForward = true;
 var list = []; // List of existing rects
-
+var numTries = 5000;
 function getNumbers(count){
     var a = []
+    var nX =n;
+    var nY =n;
+
+    if (isForward){
+        nX = 4+countF*0.6;
+        nY = 4+countF*0.6;
+    }
+    else{
+        nX = 4+(numLayers-countF)*0.72;
+    }
     if (count%4==0){  // 4 cell in a row
-        var x1 = 4*Math.floor(Math.random()*(n/4));
-        var y1 = Math.floor(Math.random()*n);
+        var x1 = 4*Math.floor(Math.random()*(nX/4));
+        var y1 = Math.floor(Math.random()*nY);
         var index = y1*(n+1) +x1;
         var countWhile = 0;     // Count number of tries
         while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0
             || list.indexOf(index+2)>=0 || list.indexOf(index+3)>=0){
-            x1 = 4*Math.floor(Math.random()*(n/4));
-            y1 = Math.floor(Math.random()*n);
+            x1 = 4*Math.floor(Math.random()*(nX/4));
+            y1 = Math.floor(Math.random()*nY);
             index = y1*(n+1) +x1;
             countWhile++;
-            if (countWhile>=20)  // Tries no more than 10 times
+            if (countWhile>=numTries)  // Tries no more than 10 times
                 return [];
         }
         var obj1 ={};
@@ -328,17 +340,17 @@ function getNumbers(count){
         list.push(index+3);
     }
     else if (count%4==1){  // 4 cell in a column
-        var y1 = 4*Math.floor(Math.random()*(n/4));
-        var x1 = Math.floor(Math.random()*n);
+        var y1 = 4*Math.floor(Math.random()*(nY/4));
+        var x1 = Math.floor(Math.random()*nX);
         var index = y1*(n+1) +x1;
         var countWhile = 0;     // Count number of tries
         while (list.indexOf(index)>=0 || list.indexOf(index+n+1)>=0
             || list.indexOf(index+2*(n+1))>=0 || list.indexOf(index+3*(n+1))>=0){
-            y1 = 4*Math.floor(Math.random()*(n/4));
-            x1 = Math.floor(Math.random()*n);
+            y1 = 4*Math.floor(Math.random()*(nY/4));
+            x1 = Math.floor(Math.random()*nX);
             index = y1*(n+1) +x1;
             countWhile++;
-            if (countWhile>=20)  // Tries no more than 10 times
+            if (countWhile>=numTries)  // Tries no more than 10 times
                 return [];
         }
         var obj1 ={};
@@ -368,17 +380,17 @@ function getNumbers(count){
             list.push(index+3*(n+1));     
     }
     else if (count%4==2){  // 4 cell rect
-        var x1 = 2*Math.floor(Math.random()*(n/2));
-        var y1 = 2*Math.floor(Math.random()*(n/2));
+        var x1 = 2*Math.floor(Math.random()*(nX/2));
+        var y1 = 2*Math.floor(Math.random()*(nY/2));
         var index = y1*(n+1) +x1;
         var countWhile = 0;     // Count number of tries
         while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0
             || list.indexOf(index+(n+1))>=0 || list.indexOf(index+(n+1)+1)>=0){
-            x1 = 2*Math.floor(Math.random()*(n/2));
-            y1 = 2*Math.floor(Math.random()*(n/2));
+            x1 = 2*Math.floor(Math.random()*(nX/2));
+            y1 = 2*Math.floor(Math.random()*(nY/2));
             index = y1*(n+1)+x1;
             countWhile++;
-            if (countWhile>=20)  // Tries no more than 10 times
+            if (countWhile>=numTries)  // Tries no more than 10 times
                 return [];
         }
         var obj1 ={};
@@ -406,16 +418,16 @@ function getNumbers(count){
     }
     else {//}  // 2 cell in a row
         if (isForward){
-            var x1 = 2*Math.floor(Math.random()*(n/2));
-            var y1 = Math.floor(Math.random()*n);
+            var x1 = 2*Math.floor(Math.random()*(nX/2));
+            var y1 = Math.floor(Math.random()*nY);
             var index = y1*(n+1) +x1;
             var countWhile = 0;     // Count number of tries
             while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0){
-                x1 = 2*Math.floor(Math.random()*(n/2));
-                y1 = Math.floor(Math.random()*n);
+                x1 = 2*Math.floor(Math.random()*(nX/2));
+                y1 = Math.floor(Math.random()*nY);
                 index = y1*(n+1)+x1;
                 countWhile++;
-                if (countWhile>=10)  // Tries no more than 10 times
+                if (countWhile>=numTries)  // Tries no more than 10 times
                     return [];
             }
             var obj1 ={};
@@ -432,21 +444,21 @@ function getNumbers(count){
         }
         else{   //**************** BACKWARD ********************
                 // Add 6 cells: 2 rows 3 columns    
-            var x1 = 3*Math.floor(Math.random()*((n-3)/3));
-            var y1 = 2*Math.floor(Math.random()*(n/2));
+            var x1 = 3*Math.floor(Math.random()*((nX-3)/3));
+            var y1 = 2*Math.floor(Math.random()*(nY/2));
             var index = y1*(n+1) +x1;
             var countWhile = 0;     // Count number of tries
             while (list.indexOf(index)>=0 || list.indexOf(index+1)>=0 || list.indexOf(index+2)>=0
                 || list.indexOf(index+(n+1))>=0 || list.indexOf(index+(n+1)+1)>=0
                 || list.indexOf(index+(n+1)+2)>=0    ){
-                x1 = 3*Math.floor(Math.random()*((n-3)/3));
-                y1 = 2*Math.floor(Math.random()*(n/2));
+                x1 = 3*Math.floor(Math.random()*((nX-3)/3));
+                y1 = 2*Math.floor(Math.random()*(nY/2));
                 index = y1*(n+1)+x1;
                 countWhile++;
                 svg.selectAll(".processingText5")
                     .text("countWhile: "+countWhile); 
      
-                if (countWhile>=1000)  {// Tries no more than 20 times
+                if (countWhile>=numTries)  {// Tries no more than 20 times
                     return [];
                 }    
             }
@@ -487,16 +499,18 @@ function getNumbers(count){
     return a;
 }
 
-var cellPadding = 2.7;
+var cellPadding = 1;
 function addCells(color){
     var a = getNumbers(count);
-    if (isForward && (count+1)%4!=0){  // On FORWARD, Skip adding cells in a row to reduce the number of cells
-        var b = getNumbers(count+1);
+    //if (isForward && (count+1)%4!=0){  // On FORWARD, Skip adding cells in a row to reduce the number of cells
+    if (isForward){  // On FORWARD, Skip adding cells in a row to reduce the number of cells
+          var b = getNumbers(count+1);
         for (var i=0; i<b.length; i++){
             a.push(b[i]);
         }
     } 
-    else if (!isForward && (count+1)%4!=0){   //**************** BACKWARD ********************
+    //else if (!isForward && (count+1)%4!=0){   //**************** BACKWARD ********************
+    else if (!isForward){   //**************** BACKWARD ********************
         var b = getNumbers(count+1);
         for (var i=0; i<b.length; i++){
             a.push(b[i]);
@@ -504,15 +518,15 @@ function addCells(color){
     }   
     
     for (var i=0; i<a.length; i++){
-        var xx = margin+5.5+cellSize*a[i].x;
-        var yy = heightTop+heightRect+margin*2+5.5+cellSize*a[i].y;
+        var xx = margin+104+cellSize*a[i].x;
+        var yy = heightTop+heightRect+margin*2+104+cellSize*a[i].y;
         var index = a[i].y*(n+1)+a[i].x;
         svg.append("rect")
             .attr("class", "cell"+index)
             .attr("width", cellSize-cellPadding)
             .attr("height", cellSize-cellPadding)
-            .attr("x", xx-(a[i].x%4)*cellPadding/3)
-            .attr("y", yy-(a[i].y%4)*cellPadding/3)
+            .attr("x", xx-(a[i].x%4)*cellPadding/4)
+            .attr("y", yy-(a[i].y%4)*cellPadding/4)
             .attr("rx", 1)
             .attr("ry", 1)
             .attr("fill", color)
@@ -538,7 +552,7 @@ var timeArrayBackward = [];
 var firstTime = true;
 function sim(){
     // Reset counter after a while
-    if (timeArrayForward.length>6*numLayers){
+    if (timeArrayForward.length>9*numLayers){
         timeArrayForward =[];
         timeArrayBackward =[];
         count=1;
@@ -568,8 +582,8 @@ function sim(){
     svg.selectAll(".processingText3")
         .text("DPU utilization: "+utilization+"%"); 
 
-    svg.selectAll(".processingText4")
-        .text("isForward: "+isForward); 
+    //svg.selectAll(".processingText4")
+    //    .text("isForward: "+isForward); 
                      
     for (var i=0;i<colorList[countF].length;i++){
         addCells(colorList[countF][i]); 
@@ -623,7 +637,7 @@ function sim(){
          countF =0;
          isForward=true;
        }
-       removeCells(0.05);
+       removeCells(0.0);
     }
    // console.log(count+ " 3  countF="+countF+ " isForward="+isForward);
    //console.log(count+" "+countF+" isForward="+isForward +" "+Math.round(count/numLayers));

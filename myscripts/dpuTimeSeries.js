@@ -7,7 +7,6 @@
  */
 
 var heightBoard =200;
-var yTimeSeries = heightTop+heightRect+heightBoard*2+30;
 var color10 = d3.scale.category10();
 
 
@@ -16,7 +15,7 @@ var x = d3.scale.linear()
         .domain([0, 1000]); 
 
 var y = d3.scale.linear()
-        .range([yTimeSeries,yTimeSeries-heightBoard*0.85])
+        .range([yTimeSeries+heightBoard+20,yTimeSeries+30])
         .domain([0, 100]); 
 var xAxis, yAxis;
 
@@ -25,7 +24,7 @@ var timeRatio =2000;
 var area = d3.svg.area()
     .interpolate("monotone")
     .x(function(d) { return x(d.count); })
-    .y0(yTimeSeries)
+    .y0(yTimeSeries+heightBoard+20)
     .y1(function(d) { return y(d.utilization); });
 
 
@@ -39,26 +38,63 @@ function drawTimeSeries() {
 
   svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + yTimeSeries + ")")
+      .attr("transform", "translate(0," + (yTimeSeries+heightBoard+20) + ")")
       .call(xAxis);
 
   svg.append("text")
       .attr("fill", "#000")
-      .attr("x", width-margin-5)
-      .attr("y", yTimeSeries-margin)
+      .attr("x", heightRect2+(width-heightRect2)/2)
+      .attr("y", yTimeSeries+heightBoard+50)
       .attr("font-family", "sans-serif")
-      .attr("text-anchor", "end")
+      .attr("text-anchor", "middle")
       .style("font-size", "12px")
-      .text("Passes");
+      .text("Google Inception CNN layers");
 
   svg.append("text")
       .attr("fill", "#000")
       .attr("x", heightRect2+margin*2+35)
-      .attr("y", yTimeSeries-heightBoard+27)
+      .attr("y", yTimeSeries+27)
       .attr("font-family", "sans-serif")
       .attr("text-anchor", "start")
       .style("font-size", "12px")
-      .text("DPU utilization (%)");        
+      .text("DPU utilization (%)");    
+
+// ************************************  color legend ************************************ 
+var yLegend =yTimeSeries+20;
+var xLegend =width-margin-90;
+var rLegend = 7;
+  svg.append("text")
+      .attr("fill", "#fff")
+      .attr("x", xLegend)
+      .attr("y", yLegend)
+      .attr("font-family", "sans-serif")
+      .attr("text-anchor", "start")
+      .style("font-size", "12px")
+      .text("FORWARD");  
+  svg.append("text")
+      .attr("fill", "#000")
+      .attr("x", xLegend)
+      .attr("y", yLegend+18)
+      .attr("font-family", "sans-serif")
+      .attr("text-anchor", "start")
+      .style("font-size", "12px")
+      .text("BACKWARD");
+  svg.append("circle")
+      .attr("cx", xLegend-rLegend-4)
+      .attr("cy", yLegend-rLegend/2-1)
+      .attr("r", rLegend)
+      .attr("stroke", "#000")
+      .attr("fill", "#fff")
+      .attr("fill-opacity", 0.9)
+      .text("FORWARD");       
+  svg.append("circle")
+      .attr("cx", xLegend-rLegend-4)
+      .attr("cy", yLegend-rLegend/2+18-1)
+      .attr("r", rLegend)
+      .attr("stroke", "#000")
+      .attr("fill", "#000")
+      .attr("fill-opacity", 0.5)
+      .text("FORWARD");                  
 
  yAxis = d3.svg.axis()
     .scale(y)
